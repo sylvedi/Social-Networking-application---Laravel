@@ -11,6 +11,18 @@
 |
 */
 
+$_APIVER = "vx";
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Login/registration page route
+
+// Landing page route
+
+// Process login route
+Route::post('/api/' . $_APIVER . "/user/login", "LoginRegistrationController@loginUser");
+
+// Process registration route
+Route::post('/api/' . $_APIVER . "/user/register", "LoginRegistrationController@registerNewUser");
