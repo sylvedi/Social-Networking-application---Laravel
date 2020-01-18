@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
 	<name>login</name>
+=======
+	<name>account</name>
+>>>>>>> branch 'master' of https://github.com/Samusoidal/MCDERMITT-EDI-CST256-Milestones.git
 	<comment></comment>
 	<projects>
 	</projects>
