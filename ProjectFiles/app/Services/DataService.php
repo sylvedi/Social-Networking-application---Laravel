@@ -1,11 +1,14 @@
 <?php
+
 namespace App\Services;
+
+use \PDO;
 
 class DataService
 {
     
-    public function connect(){
-        
+    public static function connect(){
+        return new PDO('mysql:host=localhost;dbname=LinkMe', 'root', 'RootPass');
     }
     
 }

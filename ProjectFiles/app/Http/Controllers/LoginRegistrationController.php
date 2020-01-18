@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\DataService;
+use App\Services\UserService;
+use App\Services\AuthService;
 
 class LoginRegistrationController extends Controller
 {
@@ -21,6 +24,12 @@ class LoginRegistrationController extends Controller
         $userUsername = $request->input('username');
         $userPassword = $request->input('password');
         
+        $db = DataService::connect();
+        
+        UserService::registerUser($db, $userFirstName, $userLastName, $userCity, $userState, $userEmail, $userUsername, $userPassword);
+        
+        return view("registerandlogin");
+        
     }
     
     // Login a user
@@ -28,6 +37,16 @@ class LoginRegistrationController extends Controller
         
         $userUsername = $request->input('username');
         $userPassword = $request->input('password');
+        
+        $db = DataService::connect();
+        
+        $loginResult = AuthService::login($db, $userUsername, $userPassword);
+        
+        if($loginResult){
+            return view("welcome"); // TODO change
+        } else {
+            return view("registerandlogin");
+        }
         
     }
     
