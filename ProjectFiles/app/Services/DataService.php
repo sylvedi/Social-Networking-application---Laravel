@@ -8,7 +8,7 @@ class DataService
 {
     
     public static function connect(){
-        return new PDO('mysql:host=localhost;dbname=LinkMe', 'root', 'RootPass');
+        return new PDO('mysql:host=localhost;dbname=LinkMe', 'root', 'root');
     }
     
 }
