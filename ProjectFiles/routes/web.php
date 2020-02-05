@@ -17,10 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::get('/helloworld', function(){
-    return "Hello World";
-});
-
 // Landing page route TODO
     
 // Login/registration page route

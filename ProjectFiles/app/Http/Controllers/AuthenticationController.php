@@ -63,7 +63,7 @@ class AuthenticationController extends Controller
             session(['user'=>$loginResult]);
             return view("welcome"); // TODO SYLVANUS change landing page
         } else {
-            return view("registerandlogin");
+            return view("registerandlogin")->with(['message'=>"There was an error during login."]);
         }
         
     }
