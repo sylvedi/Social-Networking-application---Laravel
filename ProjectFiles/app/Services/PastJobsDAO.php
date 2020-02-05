@@ -7,6 +7,9 @@ use App\Services\Utility\DatabaseException;
 use \PDO;
 use \PDOException;
 
+/*
+ * Contains CRUD operations for the PASTJOBS table
+ */
 class PastJobsDAO
 {
     
@@ -15,6 +18,9 @@ class PastJobsDAO
         $this->db = $db;
     }
     
+    /*
+     * Delete a past jobs entry by ID
+     */
     public function deletePastJobs($id){
         Log::info("Entering PastJobsDAO.deletePastJobs($id)");
         

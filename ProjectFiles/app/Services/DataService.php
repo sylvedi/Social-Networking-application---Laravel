@@ -4,9 +4,15 @@ namespace App\Services;
 
 use \PDO;
 
+/*
+ * Contains static methods for accessing the database
+ */
 class DataService
 {
     
+    /*
+     * Connect to the mySQL database
+     */
     public static function connect(){
         $servername = config("database.connections.mysql.host");
         $port = config("database.connections.mysql.port");

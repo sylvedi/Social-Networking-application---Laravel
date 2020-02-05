@@ -4,8 +4,7 @@
 
 @section('content')
 
-<div class="container hero">.
-	<p>{{ $message or 'no message' }}</p>
+<div class="container hero">
     <table>
     <tr><th>ID</th><th>Username</th><th>Suspend</th></tr>
     @forelse ($users as $user)

@@ -8,6 +8,9 @@ use \PDO;
 use \PDOException;
 use \ArrayObject;
 
+/*
+ * Contains CRUD operations for the USERS table
+ */
 class UserDAO
 {
     
@@ -16,6 +19,9 @@ class UserDAO
         $this->db = $db;
     }
     
+    /*
+     * Find and return a user by username and password
+     */
     public function findByUser($user){
         Log::info("Entering UserDAO.findByUser()");
         
@@ -44,6 +50,9 @@ class UserDAO
         }
     }
     
+    /*
+     * Get a user by ID
+     */
     public function getUser($id){
         Log::info("Entering UserDAO.getUser($id)");
         
@@ -70,7 +79,9 @@ class UserDAO
         
     }
     
-    // Return ALL users as models
+    /*
+     * Get all users
+     */
     public function getUsers(){
         
         Log::info("Entering UserDAO.getUsers()");
@@ -101,6 +112,9 @@ class UserDAO
         
     }
     
+    /*
+     * Insert new user into table
+     */
     public function addUser($user){
         
         Log::info("Entering UserDAO.addUser()");
@@ -152,6 +166,9 @@ class UserDAO
         
     }
     
+    /*
+     * Update user
+     */
     public function updateUser($user){
         
         Log::info("Entering UserDAO.updateUser()");
@@ -215,6 +232,9 @@ class UserDAO
         
     }
     
+    /*
+     * Delete user from the database
+     */
     public function deleteUser($id){
         
         Log::info("Entering UserDAO.deleteUser()");
@@ -242,9 +262,6 @@ class UserDAO
         }
         
     }
-    
-    // TODO add admin
-    // TODO remove admin
     
 }
 

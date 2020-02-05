@@ -29,7 +29,7 @@ Route::get('/login', function(){
 });
 
 // Admin page route
-Route::get('/admin', "AdministrationController@displayAdminPage"); // TODO
+Route::get('/admin', "AdministrationController@displayAdminPage");
 
 // Profile page route
 Route::get('/profile', ['as'=>'profile', 'uses'=>"ProfileController@displayProfile"]);
@@ -49,9 +49,11 @@ Route::post('/api/' . $_APIVER . "/user/update", ['as'=>'updateUser', 'uses'=>"P
 // Process delete user route
 Route::post('/api/' . $_APIVER . "/user/delete", ['as'=>'deleteUser', 'uses'=>"ProfileController@deleteUser"]);
 
-Route::post('/api/' . $_APIVER . "/user/unsuspend", ['as'=>'unsuspendUser', 'uses'=>"ProfileController@unsuspendUser"]);
+// Suspend user route
+Route::post('/api/' . $_APIVER . "/user/unsuspend", ['as'=>'unsuspendUser', 'uses'=>"AdministrationController@unsuspendUser"]);
 
-Route::post('/api/' . $_APIVER . "/user/suspend", ['as'=>'suspendUser', 'uses'=>"ProfileController@suspendUser"]);
+// Unsuspend user route
+Route::post('/api/' . $_APIVER . "/user/suspend", ['as'=>'suspendUser', 'uses'=>"AdministrationController@suspendUser"]);
 
 // Debug route
 Route::get('/debug', function(){

@@ -3,20 +3,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\UserService;
-use App\Services\DataService;
 use App\Services\SecurityService;
 use App\Models\UserModel;
-use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
 
+    /*
+     * Display a user profile by ID
+     */
     public function displayProfile(Request $request)
     {
+
+        // GET parameters
         $id = $request->id;
 
-        $db = DataService::connect();
-        $service = new UserService($db);
+        $service = new UserService();
         $user = $service->getProfile($id);
 
         return view("profile")->with([
@@ -25,14 +27,18 @@ class ProfileController extends Controller
         ]);
     }
 
+    /*
+     * Retrieve a form for editing a user profile by ID
+     */
     public function displayProfileForEdit(Request $request)
     {
+        // GET parameters
         $id = $request->id;
 
-        $db = DataService::connect();
-        $service = new UserService($db);
-        $sService = new SecurityService($db);
+        $service = new UserService();
+        $sService = new SecurityService();
 
+        // If the logged in user has permission to edit the profile
         if ($sService->canEditUser($id)) {
             $user = $service->getProfile($id);
             return view("profileedit")->with([
@@ -46,52 +52,9 @@ class ProfileController extends Controller
         }
     }
 
-    public function suspendUser(Request $request)
-    {
-        $userId = $request->input("id");
-
-        $db = DataService::connect();
-        $service = new UserService($db);
-
-        if (session('UserID') != $userId) {
-            $result = $service->suspendUser($userId);
-            if ($result) {
-                return view("admin")->with([
-                    'message' => "The user was suspended.",
-                    'users' => $service->getProfiles()
-                ]);
-            }
-        } else {
-            return view("admin")->with([
-                'message' => "You cannot perform this action on yourself.",
-                'users' => $service->getProfiles()
-            ]);
-        }
-    }
-
-    public function unsuspendUser(Request $request)
-    {
-        $userId = $request->input("id");
-
-        $db = DataService::connect();
-        $service = new UserService($db);
-
-        if (session('UserID') != $userId) {
-            $result = $service->unsuspendUser($userId);
-            if ($result) {
-                return view("admin")->with([
-                    'message' => "The user was restored.",
-                    'users' => $service->getProfiles()
-                ]);
-            }
-        } else {
-            return view("admin")->with([
-                'message' => "You cannot perform this action on yourself.",
-                'users' => $service->getProfiles()
-            ]);
-        }
-    }
-
+    /*
+     * Update a user profile from a form
+     */
     public function updateUser(Request $request)
     {
         $userId = $request->input("id");
@@ -112,12 +75,11 @@ class ProfileController extends Controller
         $userTagline = $request->input('tagline');
         $userPhoto = $request->input('photo');
 
-        $db = DataService::connect();
-        $service = new UserService($db);
+        $service = new UserService();
 
         $user = new UserModel($userId, $userUsername, $userPassword, $userFirstname, $userLastname, $userEmail, $userCity, $userState, $userSuspended, $userBirthday, $userTagline, $userPhoto);
 
-        $sService = new SecurityService($db);
+        $sService = new SecurityService();
 
         if ($sService->canEditUser($userId)) {
             $result = $service->updateUser($user);
@@ -141,19 +103,24 @@ class ProfileController extends Controller
         }
     }
 
+    /*
+     * Delete a user by ID
+     */
     public function deleteUser(Request $request)
     {
-
-        // TODO authenticate against session ID
         $id = $request->input("id");
 
-        $db = DataService::connect();
-        $service = new UserService($db);
+        $service = new UserService();
 
-        $sService = new SecurityService($db);
+        $sService = new SecurityService();
 
+        // If the user is not deleting their own account
         if (session('UserID') != $id) {
+            
+            // If the user has permission to edit user
             if ($sService->canEditUser($id)) {
+                
+                // Perform deletion task
                 $result = $service->deleteUser($id);
 
                 // TODO make this return a different view for admin/non-admin
@@ -174,12 +141,11 @@ class ProfileController extends Controller
                 ]);
             }
         } else {
-            
+
             return view("admin")->with([
                 'message' => "You cannot perform this action on yourself.",
                 'users' => $service->getProfiles()
             ]);
-            
         }
     }
 }

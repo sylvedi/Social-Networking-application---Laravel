@@ -7,6 +7,9 @@ use App\Services\Utility\DatabaseException;
 use \PDO;
 use \PDOException;
 
+/*
+ * Contains CRUD operations for the CREDENTIALS table
+ */
 class CredentialsDAO
 {
     
@@ -15,10 +18,13 @@ class CredentialsDAO
         $this->db = $db;
     }
     
+    /*
+     * Delete a credential by ID
+     */
     public function deleteCredential($id){
         Log::info("Entering CredentialsDAO.deleteCredential($id)");
         
-        try{
+        try {
             
             $stmt = $this->db->prepare("DELETE FROM CREDENTIALS WHERE ID = :id");
             $stmt->bindParam(':id', $id);

@@ -14,12 +14,25 @@
     
     @yield('styles')
     
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+    <script>
+    $(document).ready(function(){
+        $("#toastClose").click(function(){
+            $("#alertToast").fadeOut();
+        });
+        setTimeout(function() {
+            $('#toastClose').click();
+        }, 3000);
+    });
+    </script>
+    
     @yield('scripts')
 </head>
 
 <body style="width: 27;height: 708px;max-width: 100%;">
-    <div style="width: 100%;">
-    
+
+    <div style="width: 100%;">    
         <div class="header-blue" style="width: 100;height: 1247px;">
             <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
                 <div class="container-fluid">
@@ -53,8 +66,15 @@
                             </div>
                 </div>
             </nav>
-    
-    	@yield('content')
+            
+			@isset($message)
+			<div class="alert" id="alertToast" style="display: block; float: left; z-index: 3; padding: 20px; background-color: #f44336; color: white; margin-left: 30%; width: 40%;">
+              <span class="closebtn" id="toastClose" style="cursor: pointer; margin-left: 15px; color: white; font-weight: bold; float: right; font-size: 22px; line-height: 20px; cursor: pointer; transition: 0.3s;">&times;</span>
+              {{ $message }}
+            </div>
+			@endisset
+
+    		@yield('content')
     	
     	</div>
     

@@ -2,21 +2,24 @@
 
 namespace App\Services;
 
-use \PDO;
-use PDOException;
 use App\Models\UserModel;
 use App\Models\RegistrationModel;
 use Illuminate\Support\Facades\Log;
 
+/*
+ * Contains methods to manage users
+ */
 class UserService
 {
     
     private $db;
-    public function __construct($db){
-        $this->db = $db;
+    public function __construct(){
+        $this->db = DataService::connect();
     }
     
-    // Registers the given user in the database and returns a success/failure boolean
+    /*
+     * Registers the given user in the database and returns a success/failure boolean
+     */
     public function registerUser(RegistrationModel $user){
         
         $service = new UserDAO($this->db);
@@ -26,7 +29,9 @@ class UserService
         
     }
     
-    // Reads profile data from the database
+    /*
+     * Get a full profile from the database
+     */
     // TODO make this include past jobs
     public function getProfile($id){
         
@@ -37,7 +42,9 @@ class UserService
         
     }
     
-    // Reads all users from the database
+    /*
+     * Get all profiles from the database
+     */
     // TODO make this include past jobs
     public function getProfiles(){
         
@@ -47,6 +54,9 @@ class UserService
         
     }
     
+    /*
+     * Suspend a user
+     */
     public function suspendUser($id){
         
         $service = new UserDAO($this->db);
@@ -57,6 +67,9 @@ class UserService
         
     }
     
+    /*
+     * Remove suspension on a user
+     */
     public function unsuspendUser($id){
         
         $service = new UserDAO($this->db);
@@ -67,6 +80,9 @@ class UserService
         
     }
     
+    /*
+     * Update a user
+     */
     public function updateUser($user){
         
         $service = new UserDAO($this->db);
@@ -76,6 +92,9 @@ class UserService
         
     }
     
+    /*
+     * Delete a user
+     */
     public function deleteUser($id){
         
         $service = new UserDAO($this->db);
@@ -85,9 +104,12 @@ class UserService
         if($result) {
             $result2 = $service->deleteUser($id);
             if($result2){
-                $result3 = $cService->deleteCredential($id);
+                $result3 = $service->removeAdmin($id);
                 if($result3){
-                    return true;
+                    $result4 = $cService->deleteCredential($id);
+                    if($result4){
+                        return true;
+                    } else {return false; }
                 } else {return false; }
             } else { return false; }
         } else { return false; }

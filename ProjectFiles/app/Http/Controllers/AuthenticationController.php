@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use App\Services\DataService;
 use App\Services\SecurityService;
 use App\Services\UserService;
 use App\Models\LoginModel;
@@ -13,9 +11,12 @@ use App\Models\RegistrationModel;
 class AuthenticationController extends Controller
 {
     
-    // Register a new user
+    /*
+     * Register a new user from a form
+     */
     public function registerNewUser(Request $request){
         
+        // POST parameters
         $userFirstName = $request->input('firstname');
         $userLastName = $request->input('lastname');
         
@@ -27,10 +28,9 @@ class AuthenticationController extends Controller
         $userUsername = $request->input('username');
         $userPassword = $request->input('password');
         
-        $db = DataService::connect();
-        
+        // Insert user
         $reg = new RegistrationModel($userUsername, $userPassword, $userFirstName, $userLastName, $userEmail, $userCity, $userState);
-        $service = new UserService($db);
+        $service = new UserService();
         $success = $service->registerUser($reg);
         
         if($success) {
@@ -41,22 +41,21 @@ class AuthenticationController extends Controller
         
     }
     
-    // Login a user
+    /*
+     * Process login from a form
+     */
     public function loginUser(Request $request){
         
+        // POST parameters
         $userUsername = $request->input('username');
         $userPassword = $request->input('password');
         
-        $db = DataService::connect();
-        
-        $service = new SecurityService($db);
+        // Authenticate
+        $service = new SecurityService();
         $loginResult = $service->authenticate(new LoginModel(null, $userUsername, $userPassword));
         
         if($loginResult){
             $userId = $loginResult->getId();
-            Log::info(print_r($loginResult, true));
-            Log::info($loginResult->getId());
-            Log::info($userId);
             $isAdmin = $service->checkAdmin($userId);
             session(['LoggedIn'=>true]);
             session(['UserID'=>$userId]);
