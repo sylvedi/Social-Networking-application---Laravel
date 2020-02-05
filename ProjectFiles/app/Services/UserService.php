@@ -100,11 +100,12 @@ class UserService
         $service = new UserDAO($this->db);
         $cService = new CredentialsDAO($this->db);
         $pjService = new PastJobsDAO($this->db);
+        $sSecurity = new SecurityDAO($this->db);
         $result = $pjService->deletePastJobs($id);
         if($result) {
             $result2 = $service->deleteUser($id);
             if($result2){
-                $result3 = $service->removeAdmin($id);
+                $result3 = $sSecurity->removeAdmin($id);
                 if($result3){
                     $result4 = $cService->deleteCredential($id);
                     if($result4){

@@ -44,7 +44,7 @@ class SecurityService
         
         Log::info("Entering SecurityService.checkAdmin()");
         
-        $service = SecurityDAO();
+        $service = new SecurityDAO($this->db);
         $result = $service->checkAdmin($id);
         
         return $result;

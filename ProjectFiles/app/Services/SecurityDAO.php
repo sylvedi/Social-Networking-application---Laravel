@@ -26,7 +26,7 @@ class SecurityDAO
         
         try{
             
-            $stmt = $this->db->prepare("SELECT ID FROM ADMINS WHERE USERS_ID = :id;");
+            $stmt = $this->db->prepare("SELECT * FROM ADMINS WHERE USERS_ID = :id;");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             

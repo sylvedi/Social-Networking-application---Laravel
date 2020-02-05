@@ -15,7 +15,7 @@ $_APIVER = "vx";
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/helloworld', function(){
     return "Hello World";
@@ -24,9 +24,15 @@ Route::get('/helloworld', function(){
 // Landing page route TODO
     
 // Login/registration page route
-Route::get('/login', function(){
+Route::get('/signin', function(){
     return view('registerandlogin');
-});
+})->name('signin');
+
+// Logout route
+Route::get('/logout', function(){
+    session()->flush();
+    return view('registerandlogin');
+})->name('logout');
 
 // Admin page route
 Route::get('/admin', "AdministrationController@displayAdminPage");

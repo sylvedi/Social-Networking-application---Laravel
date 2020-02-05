@@ -36,7 +36,7 @@
         <div class="header-blue" style="width: 100;height: 1247px;">
             <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Company Name</a>
+                    <a class="navbar-brand" href="#">Digidex</a>
                     <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="navbar-toggler-icon"></span>
@@ -44,14 +44,7 @@
                     <div class="collapse navbar-collapse" id="navcol-1">
                         <ul class="nav navbar-nav">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" href="#">Link</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown </a>
-                                <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#">First Item</a>
-                                    <a class="dropdown-item" role="presentation" href="#">Second Item</a>
-                                    <a class="dropdown-item" role="presentation" href="#">Third Item</a>
-                                </div>
+                                <a class="nav-link" href="{{ route('welcome') }}">Home</a>
                             </li>
                         </ul>
                         <form class="form-inline mr-auto" target="_self">
@@ -60,15 +53,23 @@
                             </label>
                                 <input class="form-control search-field" type="search" id="search-field" name="search">
                             </div>
-                        </form><span class="navbar-text">
-                             <a class="login" href="#">Log In</a></span>
-                             <a class="btn btn-light action-button" role="button" href="#">Sign Up</a>
-                            </div>
+                        </form>
+                        
+                        @if(session("LoggedIn"))
+                        	<span class="navbar-text"><a class="login" href="{{ route('profile', ['id'=>session('UserID')]) }}">Profile</a></span>
+                            <a class="btn btn-light action-button" role="button" href="{{ route('logout') }}">Logout</a>
+                        @else
+                        	<span class="navbar-text"><a class="login" href="{{ route('signin') }}">Log In</a></span>
+                             <a class="btn btn-light action-button" role="button" href="{{ route('signin') }}">Sign Up</a>
+                        @endif
+                        
+                        </div>
                 </div>
             </nav>
             
+            
 			@isset($message)
-			<div class="alert" id="alertToast" style="display: block; float: left; z-index: 3; padding: 20px; background-color: #f44336; color: white; margin-left: 30%; width: 40%;">
+			<div class="alert" id="alertToast" style="display: block; z-index: 3; padding: 20px; background-color: #f44336; color: white; margin-left: 30%; width: 40%;">
               <span class="closebtn" id="toastClose" style="cursor: pointer; margin-left: 15px; color: white; font-weight: bold; float: right; font-size: 22px; line-height: 20px; cursor: pointer; transition: 0.3s;">&times;</span>
               {{ $message }}
             </div>
