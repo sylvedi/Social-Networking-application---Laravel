@@ -61,6 +61,7 @@ class ProfileController extends Controller
         $userId = $request->input("id");
         $userUsername = $request->input('username');
         $userPassword = $request->input('password');
+        $userConfirmPassword = $request->input('confirmpassword');
 
         $userFirstname = $request->input('firstname');
         $userLastname = $request->input('lastname');
@@ -82,24 +83,32 @@ class ProfileController extends Controller
 
         $sService = new SecurityService();
 
-        if ($sService->canEditUser($userId)) {
-            $result = $service->updateUser($user);
-
-            if ($result) {
-                return view("profile")->with([
-                    'user' => $user,
-                    'id' => $userId
-                ]);
+        if($userConfirmPassword == $userPassword){
+            if ($sService->canEditUser($userId)) {
+                $result = $service->updateUser($user);
+    
+                if ($result) {
+                    return view("profile")->with([
+                        'user' => $user,
+                        'id' => $userId
+                    ]);
+                } else {
+                    return view("profileedit")->with([
+                        'id' => $userId,
+                        'message',
+                        "There was an error updating user."
+                    ]);
+                }
             } else {
                 return view("profile")->with([
-                    'id' => $userId,
-                    'message',
-                    "There was an error updating user."
+                    'user' => $user,
+                    'message' => "No permissions to modify user."
                 ]);
             }
         } else {
-            return view("profile")->with([
-                'message' => "No permissions to modify user."
+            return view("profileedit")->with([
+                'user' => $user,
+                'message' => "Passwords do not match"
             ]);
         }
     }
@@ -127,6 +136,7 @@ class ProfileController extends Controller
                 // TODO make this return a different view for admin/non-admin
                 if ($result) {
                     return view("admin")->with([
+                        'message' => "User has been deleted.",
                         'users' => $service->getProfiles()
                     ]);
                 } else {

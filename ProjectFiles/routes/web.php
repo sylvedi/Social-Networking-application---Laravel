@@ -25,13 +25,10 @@ Route::get('/signin', function(){
 })->name('signin');
 
 // Logout route
-Route::get('/logout', function(){
-    session()->flush();
-    return view('registerandlogin');
-})->name('logout');
+Route::get('/logout', ['as'=>'logout', 'uses'=>"AuthenticationController@logout"]);
 
 // Admin page route
-Route::get('/admin', "AdministrationController@displayAdminPage");
+Route::get('/admin', "AdministrationController@displayAdminPage")->name('admin');
 
 // Profile page route
 Route::get('/profile', ['as'=>'profile', 'uses'=>"ProfileController@displayProfile"]);

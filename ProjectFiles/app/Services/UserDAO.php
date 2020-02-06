@@ -188,7 +188,7 @@ class UserDAO
             $photo = $user->getPhoto();
             $suspended = $user->getSuspended();
             
-            $stmt = $this->db->prepare("UPDATE CREDENTIALS SET `username` = :username, `password` = :password WHERE ID = :id");
+            $stmt = $this->db->prepare("UPDATE CREDENTIALS SET `username` = :username, `password` = AES_ENCRYPT(:password, UNHEX(SHA2('GCU-CST-256-2020-McDermitt-Edi',512))) WHERE ID = :id");
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':username', $username);
             $stmt->bindParam(':password', $password);

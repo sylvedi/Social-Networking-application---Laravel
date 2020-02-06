@@ -55,17 +55,29 @@ class AuthenticationController extends Controller
         $loginResult = $service->authenticate(new LoginModel(null, $userUsername, $userPassword));
         
         if($loginResult){
-            $userId = $loginResult->getId();
-            $isAdmin = $service->checkAdmin($userId);
-            session(['LoggedIn'=>true]);
-            session(['UserID'=>$userId]);
-            session(['IsAdmin'=>$isAdmin]);
-            session(['user'=>$loginResult]);
-            return view("welcome"); // TODO SYLVANUS change landing page
+            if($loginResult->getSuspended()){
+                return view("registerandlogin")->with(['message'=>"Your account has been suspended."]);
+            } else {
+                $userId = $loginResult->getId();
+                $isAdmin = $service->checkAdmin($userId);
+                session(['LoggedIn'=>true]);
+                session(['UserID'=>$userId]);
+                session(['IsAdmin'=>$isAdmin]);
+                session(['user'=>$loginResult]);
+                return view("welcome");
+            }
         } else {
             return view("registerandlogin")->with(['message'=>"There was an error during login."]);
         }
         
+    }
+    
+    public function logout(Request $request){
+        session(['LoggedIn'=>null]);
+        session(['UserID'=>null]);
+        session(['IsAdmin'=>null]);
+        session(['user'=>null]);
+        return view("registerandlogin")->with(['message'=>"You have been logged out."]);
     }
     
 }

@@ -6,12 +6,25 @@
             <div class="search-container"></div>
             <ul class="nav navbar-nav ml-auto" id="desktop-toolbar">
                 <li class="nav-item" role="presentation"><a class="nav-link" href="#"></a></li>
-                <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#" style="color: rgb(236,240,241);"><img class="rounded-circle" src="assets/img/user-photo.jpg" width="25px" height="25px" style="margin-top: -5px;"> John <i class="fa fa-chevron-down fa-fw"></i></a>
-                    <div
-                        class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="#"><i class="fa fa-user fa-fw"></i> Profile </a><a class="dropdown-item" role="presentation" href="#"><i class="fa fa-power-off fa-fw"></i>Logout </a></div>
+                <li class="nav-item dropdown">
+                
+                @if(session('LoggedIn'))
+                    <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#" style="color: rgb(236,240,241);">
+                        <img class="rounded-circle" src="assets/img/user-photo.jpg" width="25px" height="25px" style="margin-top: -5px;"> {{ session('user')->getFirstname() }} <i class="fa fa-chevron-down fa-fw"></i>
+                    </a>
+                    <div class="dropdown-menu" role="menu">
+                    <a class="dropdown-item" role="presentation" href="{{ route('profile', ['id'=>session('user')->getId()]) }}"><i class="fa fa-user fa-fw"></i> Profile </a>
+                	@if(session('IsAdmin'))
+                		<a class="dropdown-item" role="presentation" href="{{ route('admin') }}"><i class="fa fa-power-off fa-fw"></i>Admin </a>
+                	@endif
+                    <a class="dropdown-item" role="presentation" href="{{ route('logout') }}"><i class="fa fa-power-off fa-fw"></i>Logout </a>
+                    </div>
+                @else
+                    <a role="presentation" href="{{ route('signin') }}"><i class="fa fa-user fa-fw"></i> Login or Sign Up </a>
+                @endif
     </li>
     </ul>
-    <ul class="nav navbar-nav" id="mobile-nav">
+    <!-- <ul class="nav navbar-nav" id="mobile-nav">
         <li class="nav-item" role="presentation"></li>
         <li class="nav-item" role="presentation"><a class="nav-link" href="index.html" style="color: rgb(236,240,241);"> Nav Item</a></li>
         <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#" style="color: rgb(236,240,241);"> Dropdown<i class="fa fa-chevron-down fa-fw"></i> </a>
@@ -21,7 +34,7 @@
             <div class="dropdown-menu" role="menu"><a class="dropdown-item" role="presentation" href="fundraising.html"><i class="fa fa-star fa-fw"></i> Link Item</a><a class="dropdown-item" role="presentation" href="donations.html"><i class="fa fa-star fa-fw"></i> Link Item</a><a class="dropdown-item"
                     role="presentation" href="events-listing.html"><i class="fa fa-star fa-fw"></i> Link Item</a></div>
         </li>
-    </ul>
+    </ul> -->
     </div>
     </div>
 </nav>
