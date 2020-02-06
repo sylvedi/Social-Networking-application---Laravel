@@ -61,10 +61,7 @@ class UserService
         
         $service = new UserDAO($this->db);
         $user = $this->getProfile($id);
-        $id = $user->getId();
-        $oldUser = $service->getUser($id);
-        $newPass = $oldUser->getPassword();
-        $user->setPassword($newPass);
+        $user->setPassword(null); // keep the password from updating
         $user->setSuspended(true);
         $result = $service->updateUser($user);
         return $result;
@@ -78,10 +75,7 @@ class UserService
         
         $service = new UserDAO($this->db);
         $user = $this->getProfile($id);
-        $id = $user->getId();
-        $oldUser = $service->getUser($id);
-        $newPass = $oldUser->getPassword();
-        $user->setPassword($newPass);
+        $user->setPassword(null); // keep the password from updating
         $user->setSuspended(false);
         $result = $service->updateUser($user);
         return $result;
@@ -95,12 +89,9 @@ class UserService
         
         $service = new UserDAO($this->db);
         
-        // Check if the password was not changed and fill in the blank information
+        // Check if the password was not changed and keep the password from updating with bad information
         if($user->getPassword() == null){
-            $id = $user->getId();
-            $oldUser = $service->getUser($id);
-            $newPass = $oldUser->getPassword();
-            $user->setPassword($newPass);
+            $user->setPassword(null);
         }
         
         $result = $service->updateUser($user);

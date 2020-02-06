@@ -188,10 +188,13 @@ class UserDAO
             $photo = $user->getPhoto();
             $suspended = $user->getSuspended();
             
-            $stmt = $this->db->prepare("UPDATE CREDENTIALS SET `username` = :username, `password` = AES_ENCRYPT(:password, UNHEX(SHA2('GCU-CST-256-2020-McDermitt-Edi',512))) WHERE ID = :id");
+            $queryString = "UPDATE CREDENTIALS SET `username` = :username";
+            if($password != null) $queryString = $queryString . ", `password` = AES_ENCRYPT(:password, UNHEX(SHA2('GCU-CST-256-2020-McDermitt-Edi',512)))";
+            $queryString = $queryString . " WHERE ID = :id";
+            $stmt = $this->db->prepare($queryString);
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':password', $password);
+            if($password != null) $stmt->bindParam(':password', $password);
             $result = $stmt->execute();
             
             if($result){
@@ -212,7 +215,7 @@ class UserDAO
                 $result2 = $stmt2->execute();
                 
                 if($result2){
-                    Log::info("Exit UserDAO.updateUser() with success");
+                    Log::info("Exit UserDAO.updateUser() with success: " . print_r($user, true));
                     return true;
                 } else {
                     Log::info("Exit UserDAO.updateUser() with failure");

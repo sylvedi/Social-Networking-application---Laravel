@@ -57,18 +57,18 @@
 											<form method="post" action="{{ route('suspendUser') }}">
 												{{ csrf_field() }} <input readonly hidden type="text"
 													value="{{ $user->getId() }}" name="id"></input>
-												<button class="btn btn-primary" type="submit" value="Suspend"
-													style="width: 36px; height: 37px; margin-right: 14px; background-color: #f90;">
-													<i class="fa fa-lock"
-														style="margin-top: -9px; margin-left: -2px;"></i>
+												<button class="btn btn-primary" type="submit" value="Unsuspend"
+													style="width: 36px; height: 37px; margin-right: 14px; background-color: #6f9;">
+													<i class="fa fa-unlock"
+														style="margin-top: -9px; margin-left: -2px;"></i></button>
 											</form> @else
 											<form method="post" action="{{ route('unsuspendUser') }}">
 												{{ csrf_field() }} <input readonly hidden type="text"
 													value="{{ $user->getId() }}" name="id"></input>
-												<button class="btn btn-primary" type="submit" value="Unsuspend"
-													style="width: 36px; height: 37px; margin-right: 14px; background-color: #6f9;">
-													<i class="fa fa-unlock"
-														style="margin-top: -9px; margin-left: -2px;"></i>
+												<button class="btn btn-primary" type="submit" value="Suspend"
+													style="width: 36px; height: 37px; margin-right: 14px; background-color: #f90;">
+													<i class="fa fa-lock"
+														style="margin-top: -9px; margin-left: -2px;"></i></button>
 											</form> @endif
 
 											<form method="post" action="{{ route('deleteUser') }}">
