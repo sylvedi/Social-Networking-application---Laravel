@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Services\UserService;
-use App\Services\SecurityService;
+use App\Services\Business\UserService;
+use App\Services\Business\SecurityService;
 use Illuminate\Http\Request;
 
 /*

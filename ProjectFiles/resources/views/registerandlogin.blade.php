@@ -17,6 +17,7 @@
     }
     </script>
 @endsection @section('content')
+
 <div class="container">
 	<div class="row" style="margin-top: 67px;">
 		<div id="registerForm" class="col"
@@ -100,5 +101,9 @@
 		</div>
 	</div>
 </div>
+
+@isset($doLogin)
+<script>toggleRegistration()</script>
+@endisset
 
 @endsection

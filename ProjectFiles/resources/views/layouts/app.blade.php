@@ -51,7 +51,7 @@
 	@include('layouts.navbar')
 	
 	@isset($message)
-	<div class="alert" id="alertToast" style="display: block; z-index: 3; padding: 20px; background-color: #f44336; color: white; margin-left: 30%; width: 40%;">
+	<div class="alert" id="alertToast" style="display: block; z-index: 3; padding: 20px; background-color: #f44336; color: white; margin-left: 30%; width: 40%; position: absolute;">
       <span class="closebtn" id="toastClose" style="cursor: pointer; margin-left: 15px; color: white; font-weight: bold; float: right; font-size: 22px; line-height: 20px; cursor: pointer; transition: 0.3s;">&times;</span>
       {{ $message }}
     </div>

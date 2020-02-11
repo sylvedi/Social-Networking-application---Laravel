@@ -1,9 +1,10 @@
 <?php
-namespace App\Services;
+namespace App\Services\Business;
 
-use App\Models\LoginModel;
 use Illuminate\Support\Facades\Log;
-use \PDO;
+use PDO;
+use App\Services\Data\AdminDAO;
+use App\Services\Data\CredentialDAO;
 
 /*
  * Contains methods and logic for processing permissions and security-related functionality
@@ -22,14 +23,14 @@ class SecurityService
      */
     public function authenticate($user){
         
-        Log::info("entering SecurityService.login()");
+        Log::info("Entering SecurityService.login()");
         
-        $service = new UserDAO($this->db);
-        $result = $service->findByUser($user);
+        $service = new CredentialDAO($this->db);
+        $result = $service->readByModel($user);
         
-        if($result != null){
+        if($result){
             Log::info("Exit SecurityService.login() with success.");
-            return $result;
+            return $result->fetch(PDO::FETCH_ASSOC);
         } else {
             Log::info("Exit SecurityService.login() with failure.");
             return false;
@@ -42,12 +43,18 @@ class SecurityService
      */
     public function checkAdmin($id){
         
-        Log::info("Entering SecurityService.checkAdmin()");
+        Log::info("Entering SecurityService.checkAdmin($id)");
         
-        $service = new SecurityDAO($this->db);
-        $result = $service->checkAdmin($id);
+        $service = new AdminDAO($this->db);
+        $result = $service->readById($id);
         
-        return $result;
+        if(!$result){
+            Log::info("Exit SecurityService.checkAdmin($id) with failure.");
+            return false;
+        } else {
+            Log::info("Exit SecurityService.checkAdmin($id) with success.");
+            return true;
+        }
         
     }
     

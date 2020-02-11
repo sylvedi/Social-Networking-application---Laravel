@@ -4,6 +4,7 @@ namespace App\Models;
 class RegistrationModel implements \JsonSerializable
 {
     
+    private $id;
     private $username;
     private $password;
     private $firstname;
@@ -12,7 +13,8 @@ class RegistrationModel implements \JsonSerializable
     private $city;
     private $state;
     
-    public function __construct($username, $password, $firstname, $lastname, $email, $city, $state){
+    public function __construct($id, $username, $password, $firstname, $lastname, $email, $city, $state){
+        $this->id = $id;
         $this->username = $username;
         $this->password = $password;
         $this->firstname = $firstname;
@@ -22,6 +24,21 @@ class RegistrationModel implements \JsonSerializable
         $this->state = $state;
     }
     
+    /**
+     * @return mixed
+     */
+    public function getId(){
+        return $this->id;
+    }
+    
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
     /**
      * @return mixed
      */

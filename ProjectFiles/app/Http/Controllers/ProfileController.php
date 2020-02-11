@@ -2,8 +2,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\UserService;
-use App\Services\SecurityService;
+use App\Services\Business\UserService;
+use App\Services\Business\SecurityService;
 use App\Models\UserModel;
 
 class ProfileController extends Controller

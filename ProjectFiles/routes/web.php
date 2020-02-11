@@ -55,7 +55,4 @@ Route::post('/api/' . $_APIVER . "/user/unsuspend", ['as'=>'unsuspendUser', 'use
 Route::post('/api/' . $_APIVER . "/user/suspend", ['as'=>'suspendUser', 'uses'=>"AdministrationController@suspendUser"]);
 
 // Debug route
-Route::get('/debug', function(){
-   session_start();
-   return var_dump(session()); 
-});
+Route::get('/debug', "DebugController@scratchPad");
