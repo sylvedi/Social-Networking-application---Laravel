@@ -9,8 +9,11 @@ use App\Models\UserModel;
 class ProfileController extends Controller
 {
 
-    /*
-     * Display a user profile by ID
+    /**
+     * Display a profile by id
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function displayProfile(Request $request)
     {
@@ -26,9 +29,16 @@ class ProfileController extends Controller
             'id' => $id
         ]);
     }
+    
+    // TODO list skill
+    // TODO list education
+    // TODO list experience
 
-    /*
+    /**
      * Retrieve a form for editing a user profile by ID
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function displayProfileForEdit(Request $request)
     {
@@ -51,13 +61,107 @@ class ProfileController extends Controller
             ]);
         }
     }
+    
+    /**
+     * Retrieve a form for editing a skill by ID
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function displaySkillForEdit(Request $request)
+    {
+        
+        // TODO Display skill for edit
+        // GET parameters
+        $id = $request->id;
+        
+        $service = new UserService();
+        $sService = new SecurityService();
+        
+        // If the logged in user has permission to edit the profile
+        if ($sService->canEditUser($id)) {
+            $user = $service->getProfile($id);
+            return view("profileedit")->with([
+                'user' => $user,
+                'id' => $id
+            ]);
+        } else {
+            return view("profile")->with([
+                'message' => "No permissions to modify user."
+            ]);
+        }
+    }
+    
+    /**
+     * Retrieve a form for editing a user experience entry by ID
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function displayExperienceForEdit(Request $request)
+    {
+        
+        // TODO Display experience for edit
+        
+        // GET parameters
+        $id = $request->id;
+        
+        $service = new UserService();
+        $sService = new SecurityService();
+        
+        // If the logged in user has permission to edit the profile
+        if ($sService->canEditUser($id)) {
+            $user = $service->getProfile($id);
+            return view("profileedit")->with([
+                'user' => $user,
+                'id' => $id
+            ]);
+        } else {
+            return view("profile")->with([
+                'message' => "No permissions to modify user."
+            ]);
+        }
+    }
+    
+    /**
+     * Retrieve a form for editing a user education entry by ID
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function displayEducationForEdit(Request $request)
+    {
+        
+        // TODO Display education for edit
+        
+        // GET parameters
+        $id = $request->id;
+        
+        $service = new UserService();
+        $sService = new SecurityService();
+        
+        // If the logged in user has permission to edit the profile
+        if ($sService->canEditUser($id)) {
+            $user = $service->getProfile($id);
+            return view("profileedit")->with([
+                'user' => $user,
+                'id' => $id
+            ]);
+        } else {
+            return view("profile")->with([
+                'message' => "No permissions to modify user."
+            ]);
+        }
+    }
 
-    /*
+    /**
      * Update a user profile from a form
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function updateUser(Request $request)
     {
-        
         $userId = $request->input("id");
         $userUsername = $request->input('username');
         $userPassword = $request->input('password');
@@ -83,10 +187,10 @@ class ProfileController extends Controller
 
         $sService = new SecurityService();
 
-        if($userConfirmPassword == $userPassword){
+        if ($userConfirmPassword == $userPassword) {
             if ($sService->canEditUser($userId)) {
                 $result = $service->updateUser($user);
-    
+
                 if ($result) {
                     return view("profile")->with([
                         'user' => $user,
@@ -108,13 +212,16 @@ class ProfileController extends Controller
         } else {
             return view("profileedit")->with([
                 'user' => $user,
-                'message' => "Passwords do not match"
+                'message' => "Passwords do not match."
             ]);
         }
     }
 
-    /*
+    /**
      * Delete a user by ID
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function deleteUser(Request $request)
     {
@@ -126,10 +233,10 @@ class ProfileController extends Controller
 
         // If the user is not deleting their own account
         if (session('UserID') != $id) {
-            
+
             // If the user has permission to edit user
             if ($sService->canEditUser($id)) {
-                
+
                 // Perform deletion task
                 $result = $service->deleteUser($id);
 

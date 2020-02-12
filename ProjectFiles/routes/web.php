@@ -11,13 +11,15 @@
 |
 */
 
-$_APIVER = "vx";
 
+/**
+ * PAGE ROUTES
+ */
+
+// Landing page route
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
-
-// Landing page route TODO
     
 // Login/registration page route
 Route::get('/signin', function(){
@@ -28,13 +30,29 @@ Route::get('/signin', function(){
 Route::get('/logout', ['as'=>'logout', 'uses'=>"AuthenticationController@logout"]);
 
 // Admin page route
-Route::get('/admin', "AdministrationController@displayAdminPage")->name('admin');
+Route::get('/admin', ['as'=>'admin', 'uses'=>"AdministrationController@displayAdminPage"]);
 
 // Profile page route
 Route::get('/profile', ['as'=>'profile', 'uses'=>"ProfileController@displayProfile"]);
 
 // Profile edit page route
 Route::get('/profile/edit', ['as'=>'editprofile', 'uses'=>"ProfileController@displayProfileForEdit"]);
+
+// Education edit page
+Route::get('/profile/education/edit', ['as'=>'editprofileeducation', 'uses'=>"ProfileController@displayEducationForEdit"]);
+
+// Skill edit page
+Route::get('/profile/skill/edit', ['as'=>'editprofileskill', 'uses'=>"ProfileController@displaySkillForEdit"]);
+
+// Experience edit page
+Route::get('/profile/experience/edit', ['as'=>'editprofileexperience', 'uses'=>"ProfileController@displayExperienceForEdit"]);
+
+
+/*
+ * API ROUTES
+ */
+
+$_APIVER = "vx";
 
 // Process login route
 Route::post('/api/' . $_APIVER . "/user/login", ['as'=>'login', 'uses'=>"AuthenticationController@loginUser"]);
@@ -54,5 +72,8 @@ Route::post('/api/' . $_APIVER . "/user/unsuspend", ['as'=>'unsuspendUser', 'use
 // Unsuspend user route
 Route::post('/api/' . $_APIVER . "/user/suspend", ['as'=>'suspendUser', 'uses'=>"AdministrationController@suspendUser"]);
 
+/*
+ * DEBUG ROUTES
+ */
 // Debug route
 Route::get('/debug', "DebugController@scratchPad");
