@@ -21,36 +21,61 @@ label {
 				<div class="form-row">
 					<input type="text" name="id" hidden readonly
 						value="{{ $user->getId() }}"></input>
+					<input type="text" name="editing" hidden readonly
+						value="dummy"></input>
 					<input type="text" name="suspended" hidden readonly
 						value="{{ $user->getSuspended() }}"></input>
 					<div class="col-sm-12 col-md-6">
 						<div class="form-group">
 							<label>Firstname </label><input class="form-control" type="text"
 								name="firstname" value="{{$user->getFirstname()}}">
+								
+							@if($errors->first('firstname'))
+								<p class="validation_error">{{ $errors->first('firstname') }}</p>
+							@endif
+							
 						</div>
 					</div>
 					<div class="col-sm-12 col-md-6">
 						<div class="form-group">
 							<label>Lastname</label><input class="form-control" type="text"
 								name="lastname" value="{{$user->getLastname()}}">
+								
+							@if($errors->first('lastname'))
+								<p class="validation_error">{{ $errors->first('lastname') }}</p>
+							@endif
 						</div>
+						
+							
 					</div>
 					<div class="col-sm-12 col-md-6">
 						<div class="form-group">
 							<label>Username</label><input class="form-control" type="text"
 								name="username" value="{{$user->getUsername()}}">
+								
+    						@if($errors->first('username'))
+    								<p class="validation_error">{{ $errors->first('username') }}</p>
+    							@endif
 						</div>
 					</div>
 					<div class="col-sm-12 col-md-6">
 						<div class="form-group">
 							<label>City</label><input class="form-control" type="text"
 								name="city" value="{{$user->getCity()}}">
+								
+						@if($errors->first('city'))
+								<p class="validation_error">{{ $errors->first('city') }}</p>
+							@endif
 						</div>
 					</div>
 					<div class="col-sm-12 col-md-6">
 						<div class="form-group">
 							<label>State</label><input class="form-control" type="text"
 								name="state" value="{{$user->getState()}}">
+								
+						@if($errors->first('state'))
+								<p class="validation_error">{{ $errors->first('state') }}</p>
+							@endif
 						</div>
 					</div>
 					<div class="col-sm-12 col-md-6">
@@ -59,16 +84,28 @@ label {
 						</div>
 						<input class="form-control" name="birthday" type="date"
 							value="{{$user->getBirthday()}}" style="margin-top: -17px;">
+							
+						@if($errors->first('birthday'))
+								<p class="validation_error">{{ $errors->first('birthday') }}</p>
+							@endif
 					</div>
 				</div>
 				<div class="form-group">
 					<label>Email </label><input class="form-control" type="email"
 						autocomplete="off" required="" name="email"
 						value="{{$user->getEmail()}}">
+						
+						@if($errors->first('email'))
+								<p class="validation_error">{{ $errors->first('email') }}</p>
+							@endif
 				</div>
 				<div class="form-group">
 					<label>Tagline</label><input class="form-control" type="text"
 						name="tagline" value="{{ $user->getTagline() }}">
+						
+						@if($errors->first('tagline'))
+								<p class="validation_error">{{ $errors->first('tagline') }}</p>
+							@endif
 				</div>
 				<div class="form-row">
 					<div class="col-sm-12 col-md-6">
@@ -76,12 +113,20 @@ label {
 							<label>New Password </label><input class="form-control"
 								type="password" name="password" autocomplete="off"
 								value="{{$user->getPassword()}}">
+								
+						@if($errors->first('password'))
+								<p class="validation_error">{{ $errors->first('password') }}</p>
+							@endif
 						</div>
 					</div>
 					<div class="col-sm-12 col-md-6">
 						<div class="form-group">
 							<label>Confirm Password</label><input class="form-control"
 								type="password" name="confirmpassword" autocomplete="off">
+								
+						@if($errors->first('confirmpassword'))
+								<p class="validation_error">{{ $errors->first('confirmpassword') }}</p>
+							@endif
 						</div>
 					</div>
 				</div>

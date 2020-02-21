@@ -12,10 +12,29 @@ class UserModel implements \JsonSerializable
     private $email;
     private $city;
     private $state;
+    
     private $suspended;
     private $birthday;
     private $tagline;
     private $photo;
+    
+    public static $rules = [
+        'username' => 'required|string|between:4,16',
+        'password' => 'required_without:editing|present|between:8,128',
+        'firstname' => 'required|string|max:32',
+        'lastname' => 'required|string|max:32',
+        'email' => 'required|email|between:5,128',
+        'city' => 'required|string|max:32',
+        'state' => 'required|string|size:2',
+        
+        'suspended' => 'digits:1',
+        'birthday' => 'date',
+        'tagline' => 'string|max:255',
+        'photo' => 'string|max:128',
+        
+        // TODO
+        'confirmpassword' => 'required_with:password,editing|same:password'
+    ];
     
     public function __construct($id, $username, $password, $firstname, $lastname, $email, $city, $state, $suspended, $birthday, $tagline, $photo){
         $this->id = $id;

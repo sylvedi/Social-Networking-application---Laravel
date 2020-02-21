@@ -12,15 +12,21 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli">
+    
     <link rel="stylesheet" href="{{ asset('fonts/fontawesome-all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/fontawesome5-overrides.min.css') }}">
+    
+    <!-- 
     <link rel="stylesheet" href="{{ asset('css/LinkedIn-like-Profile-Box.css') }}">
     <link rel="stylesheet" href="{{ asset('css/Navbar---App-Toolbar--LG--MD---Mobile-Nav--SM--XS-1.css') }}">
     <link rel="stylesheet" href="{{ asset('css/Navbar---App-Toolbar--LG--MD---Mobile-Nav--SM--XS.css') }}">
     <link rel="stylesheet" href="{{ asset('css/Profile-Edit-Form-1.css') }}">
     <link rel="stylesheet" href="{{ asset('css/Profile-Edit-Form.css') }}">
     <link rel="stylesheet" href="{{ asset('css/Search-Field-With-Icon.css') }}">
+    -->
+    
+    <link rel="stylesheet" href="{{ asset('resources/assets/css/site-styles.css') }}">
     
     @yield('styles')
     
@@ -44,6 +50,7 @@
     </script>
     
     @yield('scripts')
+    
 </head>
 
 <body style="background: linear-gradient(rgba(47, 23, 15, 0.65), rgba(47, 23, 15, 0.65)), url('img/bg.jpg');background-image: url(&quot;none&quot;);background-color: #ecf0f1;color: rgb(230,230,230);">

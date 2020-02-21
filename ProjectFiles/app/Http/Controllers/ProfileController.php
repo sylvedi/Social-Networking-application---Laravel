@@ -162,6 +162,9 @@ class ProfileController extends Controller
      */
     public function updateUser(Request $request)
     {
+        
+        $request->validate(UserModel::$rules);
+        
         $userId = $request->input("id");
         $userUsername = $request->input('username');
         $userPassword = $request->input('password');
