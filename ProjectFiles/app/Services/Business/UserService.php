@@ -147,13 +147,20 @@ class UserService
     {
         $service = new UserDAO($this->db);
 
-        // Check if the password was not changed and keep the password from updating with bad information
-        if ($user->getPassword() == null) {
-            $user->setPassword(null);
+        if($user->getUsername() != null || $user->getPassword() != null){
+            $id = $user->getId();
+            $username = $user->getUsername();
+            $password = $user->getPassword();
+            $cred = new LoginModel($id, $username, $password); 
+            
+            $cService = new CredentialDAO($this->db);
+            $result2 = $cService->update($cred);
+        } else {
+            $result2 = true;
         }
-
+        
         $result = $service->update($user);
-        if ($result)
+        if ($result && $result2)
             return true;
         else
             return false;

@@ -112,7 +112,7 @@ label {
 						<div class="form-group">
 							<label>New Password </label><input class="form-control"
 								type="password" name="password" autocomplete="off"
-								value="{{$user->getPassword()}}">
+								value="">
 								
 						@if($errors->first('password'))
 								<p class="validation_error">{{ $errors->first('password') }}</p>
@@ -122,10 +122,10 @@ label {
 					<div class="col-sm-12 col-md-6">
 						<div class="form-group">
 							<label>Confirm Password</label><input class="form-control"
-								type="password" name="confirmpassword" autocomplete="off">
+								type="password" name="password_confirmation" autocomplete="off">
 								
-						@if($errors->first('confirmpassword'))
-								<p class="validation_error">{{ $errors->first('confirmpassword') }}</p>
+						@if($errors->first('password_confirmation'))
+								<p class="validation_error">{{ $errors->first('password_confirmation') }}</p>
 							@endif
 						</div>
 					</div>

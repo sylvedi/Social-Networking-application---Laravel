@@ -37,7 +37,7 @@
 		<div class="col-md-6">
 			<p class="text-left">{{ $user->getUsername() }}</p>
 			<p class="text-left">{{ $user->getEmail() }}</p>
-			<p class="text-left">{{ ($user->getBirthday() != null ? $user->getBirthday() != null : "N/A") }}</p>
+			<p class="text-left">{{ ($user->getBirthday() != null ? $user->getBirthday() : "N/A") }}</p>
 			<p class="text-left">{{ $user->getCity() }}</p>
 			<p class="text-left">{{ $user->getState() }}</p>
 		</div>

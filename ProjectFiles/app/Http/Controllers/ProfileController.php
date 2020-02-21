@@ -168,7 +168,6 @@ class ProfileController extends Controller
         $userId = $request->input("id");
         $userUsername = $request->input('username');
         $userPassword = $request->input('password');
-        $userConfirmPassword = $request->input('confirmpassword');
 
         $userFirstname = $request->input('firstname');
         $userLastname = $request->input('lastname');
@@ -190,34 +189,28 @@ class ProfileController extends Controller
 
         $sService = new SecurityService();
 
-        if ($userConfirmPassword == $userPassword) {
-            if ($sService->canEditUser($userId)) {
-                $result = $service->updateUser($user);
+        if ($sService->canEditUser($userId)) {
+            $result = $service->updateUser($user);
 
-                if ($result) {
-                    return view("profile")->with([
-                        'user' => $user,
-                        'id' => $userId
-                    ]);
-                } else {
-                    return view("profileedit")->with([
-                        'id' => $userId,
-                        'message',
-                        "There was an error updating user."
-                    ]);
-                }
-            } else {
+            if ($result) {
                 return view("profile")->with([
                     'user' => $user,
-                    'message' => "No permissions to modify user."
+                    'id' => $userId
+                ]);
+            } else {
+                return view("profileedit")->with([
+                    'id' => $userId,
+                    'message',
+                    "There was an error updating user."
                 ]);
             }
         } else {
-            return view("profileedit")->with([
+            return view("profile")->with([
                 'user' => $user,
-                'message' => "Passwords do not match."
+                'message' => "No permissions to modify user."
             ]);
         }
+            
     }
 
     /**
