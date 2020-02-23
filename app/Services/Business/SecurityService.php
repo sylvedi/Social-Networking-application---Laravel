@@ -6,6 +6,7 @@ use PDO;
 use App\Models\LoginModel;
 use App\Models\RegistrationModel;
 use App\Models\UserModel;
+use App\Services\Business\UserService;
 use App\Services\Data\AdminDAO;
 use App\Services\Data\UserDAO;
 use App\Services\Data\CredentialDAO;
@@ -91,7 +92,8 @@ class SecurityService
     public function suspendUser($id)
     {
         $service = new UserDAO($this->db);
-        $user = $this->getProfile($id);
+        $uService = new UserService();
+        $user = $uService->getProfile($id);
         $user->setPassword(null); // keep the password from updating
         $user->setSuspended(true);
         $result = $service->update($user);
@@ -107,7 +109,8 @@ class SecurityService
     public function unsuspendUser($id)
     {
         $service = new UserDAO($this->db);
-        $user = $this->getProfile($id);
+        $uService = new UserService();
+        $user = $uService->getProfile($id);
         $user->setPassword(null); // keep the password from updating
         $user->setSuspended(false);
         $result = $service->update($user);
