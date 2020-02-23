@@ -38,16 +38,6 @@ p {
 		<p style="padding: 20px; padding-bottom: 0; padding-top: 5px;">{{
 			$user->getTagline() }}</p>
 
-		@if(session('LoggedIn'))
-			@if(session('UserID') == $user->getId())
-				<div>
-					<a class="btn btn-primary" href="{{ route('addprofileeducation', ['id'=>$user->getId()]) }}">Add Education</a>
-					<a class="btn btn-primary" href="{{ route('addprofileskill', ['id'=>$user->getId()]) }}">Add Skill</a>
-					<a class="btn btn-primary" href="{{ route('addprofileexperience', ['id'=>$user->getId()]) }}">Add Experience</a>
-				</div>
-			@endif
-		@endif
-
 		<div class="row">
 			<div class="col">
 				@foreach ($education as $e)
@@ -111,33 +101,42 @@ p {
 		</div>
 	</div>
 
-	<div style="width: 128px; background-color: #213a7b; height: 32px;">
-		<h1
-			style="margin-left: 0; font-size: 22px; font-family: ABeeZee, sans-serif; color: rgb(251, 251, 251); background-color: rgb(33, 58, 123);">Experience</h1>
-
+		@if(session('LoggedIn'))
+			@if(session('UserID') == $user->getId())
+				<div>
+					<a class="btn btn-primary" href="{{ route('addprofileeducation', ['id'=>$user->getId()]) }}">Add Education</a>
+					<a class="btn btn-primary" href="{{ route('addprofileskill', ['id'=>$user->getId()]) }}">Add Skill</a>
+					<a class="btn btn-primary" href="{{ route('addprofileexperience', ['id'=>$user->getId()]) }}">Add Experience</a>
+				</div>
+			@endif
+		@endif
+		
+	<div class="col-10">
 		@foreach ($experience as $e)
-		<div class="row"
-			style="background-color: #e1e1e4; width: 676px; margin-right: 0px; margin-top: 22px; height: 109px; margin-bottom: 27px; margin-left: -2px;">
-			<div class="col-10 editable" style="height: 111px;">
-				<p
-					style="font-size: 31px; width: 687px; margin-top: 1px; margin-left: -56px;">{{
-					$e->getJobtitle() }}&nbsp;</p>
-				<p style="margin-top: -23px; margin-left: 32px;">
-					{{ $e->getCompany() }}<br>
-				</p>
-				<p style="margin-top: -18px; margin-left: 32px;">{{
-					$e->getStartdate() }} - {{ ($e->getCurrentjob() || $e->getEnddate()
-					== null) ? "Present" : $e->getEnddate() }}</p>
-					<p style="margin-top: -18px; margin-left: 32px;">{{
+
+	<div class="row">
+		<div class="card editable">
+			<div class="card-header"><p><strong>{{
+					$e->getJobtitle() }}</strong> - {{ $e->getCompany() }}</p></div>
+			<div class="card-body">
+				<blockquote class="blockquote mb-0">
+					<p>{{
 					$e->getDescription() }}</p>
-					
-					@if(session('LoggedIn')) @if(session('UserID') == $user->getId()) <span
+					<footer class="blockquote-footer">{{ $e->getStartdate() }} - {{
+						($e->getCurrentjob() || $e->getEnddate() == null) ? "Present" :
+						$e->getEnddate() }}</footer>
+				</blockquote>
+				
+				@if(session('LoggedIn') && session('UserID') == $user->getId())
+				<span
 						class="editlink" style="float:right; margin-top:-20px;"> <a class="btn btn-primary"
 						href="{{ route('editprofileexperience', ['id'=>$e->getId()]) }}">Edit</a>
 						<a class="btn btn-primary"
 						href="{{ route('deleteExperience', ['id'=>$e->getId()]) }}">Delete</a>
-					</span> @endif @endif
+					</span>
+				@endif
 			</div>
+		</div>
 		</div>
 		@endforeach
 

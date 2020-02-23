@@ -62,8 +62,7 @@ label {
                         </div>
                         <div class="form-group">
                         <label for="comments">Description</label>
-                        <textarea style="color:black;" class="form-control" id="comments" name="description" rows="5">{{ $experience->getDescription() }}
-                        </textarea>
+                        <textarea style="color:black;" class="form-control" id="comments" name="description" rows="5">{{ $experience->getDescription() }}</textarea>
                         
                         @if($errors->first('description'))
 								<p class="validation_error">{{ $errors->first('description') }}</p>
