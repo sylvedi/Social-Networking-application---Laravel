@@ -58,6 +58,8 @@ class SecurityService
         
     }
     
+    
+    // TODO check these against database
     /*
      * Verify that the currently logged in user is an admin
      */

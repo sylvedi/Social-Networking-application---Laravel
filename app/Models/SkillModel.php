@@ -5,12 +5,19 @@ class SkillModel
 {
     
     private $id;
+    private $userId;
     private $description;
     private $years;
     
-    function __construct($id, $description, $years)
+    private static $rules = [
+        'description'=>'required|between:4,32',
+        'years'=>'required|integer|min:1'
+    ];
+    
+    function __construct($id, $userId, $description, $years)
     {
         $this->id = $id;
+        $this->userId = $userId;
         $this->description = $description;
         $this->years = $years;
     }
@@ -20,6 +27,14 @@ class SkillModel
         return get_object_vars($this);
     }
     
+    /**
+     * @return multitype:string 
+     */
+    public static function getRules()
+    {
+        return SkillModel::$rules;
+    }
+
     /**
      * @return mixed
      */
@@ -34,6 +49,22 @@ class SkillModel
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @param mixed $userId
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
     }
 
     /**

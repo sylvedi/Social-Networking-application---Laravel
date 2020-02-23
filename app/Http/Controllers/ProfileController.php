@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\Business\UserService;
 use App\Services\Business\SecurityService;
+use App\Models\EducationModel;
+use App\Models\SkillModel;
 use App\Models\UserModel;
+use App\Models\ExperienceModel;
 
 class ProfileController extends Controller
 {
@@ -23,11 +26,18 @@ class ProfileController extends Controller
 
         $service = new UserService();
         $user = $service->getProfile($id);
-
+        $experience = $service->getExperience($id);
+        $skills = $service->getSkills($id);
+        $education = $service->getEducation($id);
+        
         return view("profile")->with([
             'user' => $user,
+            'experience' => $experience,
+            'skills' => $skills,
+            'education' => $education,
             'id' => $id
         ]);
+        
     }
     
     // TODO list skill
@@ -63,6 +73,35 @@ class ProfileController extends Controller
     }
     
     /**
+     * Retrieve a form for editing a user education entry by ID
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function displayEducationForEdit(Request $request)
+    {
+        
+        // TODO Display education for edit
+        
+        // GET parameters
+        $id = $request->id;
+        
+        $service = new UserService();
+        $sService = new SecurityService();
+        
+        // If the logged in user has permission to edit the profile
+        if ($sService->canEditUser($id)) {
+            $data = $service->getSingleEducation($id);
+            return view("addEducation")->with([
+                'education' => $data,
+                'editing' => true,
+            ]);
+        } else {
+            return $this->displayProfile($id);
+        }
+    }
+    
+    /**
      * Retrieve a form for editing a skill by ID
      *
      * @param Request $request
@@ -80,10 +119,10 @@ class ProfileController extends Controller
         
         // If the logged in user has permission to edit the profile
         if ($sService->canEditUser($id)) {
-            $user = $service->getProfile($id);
-            return view("profileedit")->with([
-                'user' => $user,
-                'id' => $id
+            $data = $service->getSingleSkill($id);
+            return view("addSkill")->with([
+                'skill' => $data,
+                'editing' => true
             ]);
         } else {
             return view("profile")->with([
@@ -111,41 +150,10 @@ class ProfileController extends Controller
         
         // If the logged in user has permission to edit the profile
         if ($sService->canEditUser($id)) {
-            $user = $service->getProfile($id);
-            return view("profileedit")->with([
-                'user' => $user,
-                'id' => $id
-            ]);
-        } else {
-            return view("profile")->with([
-                'message' => "No permissions to modify user."
-            ]);
-        }
-    }
-    
-    /**
-     * Retrieve a form for editing a user education entry by ID
-     *
-     * @param Request $request
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
-     */
-    public function displayEducationForEdit(Request $request)
-    {
-        
-        // TODO Display education for edit
-        
-        // GET parameters
-        $id = $request->id;
-        
-        $service = new UserService();
-        $sService = new SecurityService();
-        
-        // If the logged in user has permission to edit the profile
-        if ($sService->canEditUser($id)) {
-            $user = $service->getProfile($id);
-            return view("profileedit")->with([
-                'user' => $user,
-                'id' => $id
+            $data = $service->getSingleExperience($id);
+            return view("addExperience")->with([
+                'experience' => $data,
+                'editing' => true
             ]);
         } else {
             return view("profile")->with([
@@ -155,6 +163,365 @@ class ProfileController extends Controller
     }
 
     /**
+     * Add an education entry from a form
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function createEducation(Request $request)
+    {
+        
+        $request->validate(EducationModel::getRules());
+        
+        $userId = $request->session()->get('UserID');
+        $school = $request->input('school');
+        $description = $request->input('description');
+        
+        $service = new UserService();
+        
+        $education = new EducationModel(null, $userId, $school, $description);
+        
+        $sService = new SecurityService();
+        
+        if ($sService->canEditUser($userId)) {
+            $result = $service->createEducation($education);
+            
+            if ($result) {
+                $request->id = $userId;
+                return $this->displayProfile($request);
+            } else {
+                return view("addEducation")->with([
+                    'education' => $education,
+                    'editing' => false,
+                    'message'=> "There was an error updating this entry."
+                ]);
+            }
+        } else {
+            $request->id = $userId;
+            return $this->displayProfile($request);
+        }
+        
+    }
+    
+    /**
+     * Update an education entry from a form
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function updateEducation(Request $request)
+    {
+        
+        $request->validate(EducationModel::getRules());
+        
+        $id = $request->input("id");
+        $userId = $request->input('userId');
+        $school = $request->input('school');
+        $description = $request->input('description');
+        
+        $service = new UserService();
+        
+        $education = new EducationModel($id, $userId, $school, $description);
+        
+        $sService = new SecurityService();
+        
+        if ($sService->canEditUser($userId)) {
+            $result = $service->updateEducation($education);
+            
+            if ($result) {
+                $request->id = $userId;
+                return $this->displayProfile($request);
+            } else {
+                return view("editprofileeducation")->with([
+                    'education' => $education,
+                    'editing' => true,
+                    'message'=> "There was an error updating this entry."
+                ]);
+            }
+        } else {
+            $request->id = $userId;
+            return $this->displayProfile($request);
+        }
+        
+    }
+    
+    /**
+     * Delete an eduaction entry by ID
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function deleteEducation(Request $request)
+    {
+        $id = $request->input("id");
+        $userId = $request->session()->get('UserID');
+        
+        $service = new UserService();
+        
+        $sService = new SecurityService();
+            
+        // If the user has permission to edit user
+        if ($sService->canEditUser($id)) {
+            // Perform deletion task
+            $result = $service->deleteEducation($id);
+            
+            // TODO make this return a different view for admin/non-admin
+            if ($result) {
+                $request->id = $userId;
+                return $this->displayProfile($request);
+            } else {
+                $request->id = $userId;
+                return $this->displayProfile($request)->with(['message'=>'There was an error processing the request.']);
+            }
+        } else {
+            $request->id = $userId;
+            return $this->displayProfile($request);
+        }
+    }
+    
+    /**
+     * Add a skill entry from a form
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function createSkill(Request $request)
+    {
+        
+        $request->validate(SkillModel::getRules());
+        
+        $userId = $request->session()->get('UserID');
+        $years = $request->input('years');
+        $description = $request->input('description');
+        
+        $service = new UserService();
+        
+        $data = new SkillModel(null, $userId, $description, $years);
+        
+        $sService = new SecurityService();
+        
+        if ($sService->canEditUser($userId)) {
+            $result = $service->createSkill($data);
+            
+            if ($result) {
+                $request->id = $userId;
+                return $this->displayProfile($request);
+            } else {
+                return view("addSkill")->with([
+                    'skill' => $data,
+                    'editing' => false,
+                    'message'=> "There was an error updating this entry."
+                ]);
+            }
+        } else {
+            $request->id = $userId;
+            return $this->displayProfile($request);
+        }
+        
+    }
+    
+    /**
+     * Update a skill entry from a form
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function updateSkill(Request $request)
+    {
+        
+        $request->validate(SkillModel::getRules());
+        
+        $id = $request->input("id");
+        $userId = $request->input('userId');
+        $years = $request->input('years');
+        $description = $request->input('description');
+        
+        $service = new UserService();
+        
+        $data = new SkillModel($id, $userId, $description, $years);
+        
+        $sService = new SecurityService();
+        
+        if ($sService->canEditUser($userId)) {
+            $result = $service->updateSkill($data);
+            
+            if ($result) {
+                $request->id = $userId;
+                return $this->displayProfile($request);
+            } else {
+                return view("editprofileskill")->with([
+                    'skill' => $data,
+                    'editing' => true,
+                    'message'=> "There was an error updating this entry."
+                ]);
+            }
+        } else {
+            $request->id = $userId;
+            return $this->displayProfile($request);
+        }
+        
+    }
+    
+    /**
+     * Delete a skill entry by ID
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function deleteSkill(Request $request)
+    {
+        $id = $request->input("id");
+        $userId = $request->session()->get('UserID');
+        
+        $service = new UserService();
+        
+        $sService = new SecurityService();
+        
+        // If the user has permission to edit user
+        if ($sService->canEditUser($id)) {
+            // Perform deletion task
+            $result = $service->deleteSkill($id);
+            
+            // TODO make this return a different view for admin/non-admin
+            if ($result) {
+                $request->id = $userId;
+                return $this->displayProfile($request);
+            } else {
+                $request->id = $userId;
+                return $this->displayProfile($request)->with(['message'=>'There was an error processing the request.']);
+            }
+        } else {
+            $request->id = $userId;
+            return $this->displayProfile($request);
+        }
+    }
+    
+    /**
+     * Add an experience entry from a form
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function createExperience(Request $request)
+    {
+        
+        $request->validate(ExperienceModel::getRules());
+        
+        $userId = $request->session()->get('UserID');
+        $jobtitle = $request->input('jobtitle');
+        $company = $request->input('company');
+        $description = $request->input('description');
+        $currentjob = $request->input('currentjob');
+        $startdate = $request->input('startdate');
+        $enddate = $request->input('enddate');
+        
+        $service = new UserService();
+        
+        $experience = new ExperienceModel(null, $userId, $company, $jobtitle, $description, $startdate, $enddate, $currentjob);
+        
+        $sService = new SecurityService();
+        
+        if ($sService->canEditUser($userId)) {
+            $result = $service->createExperience($experience);
+            
+            if ($result) {
+                $request->id = $userId;
+                return $this->displayProfile($request);
+            } else {
+                return view("addEducation")->with([
+                    'experience' => $experience,
+                    'editing' => false,
+                    'message'=> "There was an error updating this entry."
+                ]);
+            }
+        } else {
+            $request->id = $userId;
+            return $this->displayProfile($request);
+        }
+        
+    }
+    
+    /**
+     * Update an experience entry from a form
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function updateExperience(Request $request)
+    {
+        
+        $request->validate(ExperienceModel::getRules());
+        
+        $id = $request->input("id");
+        $userId = $request->input('userId');
+        $jobtitle = $request->input('jobtitle');
+        $company = $request->input('company');
+        $description = $request->input('description');
+        $currentjob = ($request->input('currentjob') == null) ? false : true;
+        $startdate = $request->input('startdate');
+        $enddate = $request->input('enddate');
+        
+        $service = new UserService();
+        
+        $experience = new ExperienceModel($id, $userId, $company, $jobtitle, $description, $startdate, $enddate, $currentjob);
+        
+        $sService = new SecurityService();
+        
+        if ($sService->canEditUser($userId)) {
+            $result = $service->updateExperience($experience);
+            
+            if ($result) {
+                $request->id = $userId;
+                return $this->displayProfile($request);
+            } else {
+                return view("editprofileeducation")->with([
+                    'experience' => $experience,
+                    'editing' => true,
+                    'message'=> "There was an error updating this entry."
+                ]);
+            }
+        } else {
+            $request->id = $userId;
+            return $this->displayProfile($request);
+        }
+        
+    }
+    
+    /**
+     * Delete an experience entry by ID
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function deleteExperience(Request $request)
+    {
+        $id = $request->input("id");
+        $userId = $request->session()->get('UserID');
+        
+        $service = new UserService();
+        
+        $sService = new SecurityService();
+        
+        // If the user has permission to edit user
+        if ($sService->canEditUser($id)) {
+            // Perform deletion task
+            $result = $service->deleteExperience($id);
+            
+            // TODO make this return a different view for admin/non-admin
+            if ($result) {
+                $request->id = $userId;
+                return $this->displayProfile($request);
+            } else {
+                $request->id = $userId;
+                return $this->displayProfile($request)->with(['message'=>'There was an error processing the request.']);
+            }
+        } else {
+            $request->id = $userId;
+            return $this->displayProfile($request);
+        }
+    }
+    
+    /**
      * Update a user profile from a form
      *
      * @param Request $request
@@ -163,7 +530,7 @@ class ProfileController extends Controller
     public function updateUser(Request $request)
     {
         
-        $request->validate(UserModel::$rules);
+        $request->validate(UserModel::getRules());
         
         $userId = $request->input("id");
         $userUsername = $request->input('username');
@@ -193,10 +560,8 @@ class ProfileController extends Controller
             $result = $service->updateUser($user);
 
             if ($result) {
-                return view("profile")->with([
-                    'user' => $user,
-                    'id' => $userId
-                ]);
+                $request->id = $userId;
+                return $this->displayProfile($request);
             } else {
                 return view("profileedit")->with([
                     'id' => $userId,
@@ -205,10 +570,8 @@ class ProfileController extends Controller
                 ]);
             }
         } else {
-            return view("profile")->with([
-                'user' => $user,
-                'message' => "No permissions to modify user."
-            ]);
+            $request->id = $userId;
+            return $this->displayProfile($request);
         }
             
     }
@@ -228,7 +591,7 @@ class ProfileController extends Controller
         $sService = new SecurityService();
 
         // If the user is not deleting their own account
-        if (session('UserID') != $id) {
+        if ($request->session()->get('UserID') != $id) {
 
             // If the user has permission to edit user
             if ($sService->canEditUser($id)) {

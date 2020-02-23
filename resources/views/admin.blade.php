@@ -83,8 +83,7 @@
 											href="{{ route('editprofile', ['id'=>$user->getId()]) }}"
 											type="submit" style="width: 36px; height: 37px;"><i
 												class="fa fa-save"
-												style="margin-top: -9px; margin-left: -2px;"></i>
-											</button>
+												style="margin-top: -9px; margin-left: -2px;"></i></a>
 												<br>
 										
 										</td>

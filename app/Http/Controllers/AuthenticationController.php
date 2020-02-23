@@ -68,10 +68,10 @@ class AuthenticationController extends Controller
             if($userData->getSuspended()){
                 return view("registerandlogin")->with(['message'=>"Your account has been suspended.", 'doLogin'=>true]);
             } else {
-                session(['LoggedIn'=>true]);
-                session(['UserID'=>$userId]);
-                session(['IsAdmin'=>$isAdmin]);
-                session(['user'=>$userData]);
+                $request->session()->put(['LoggedIn'=>true]);
+                $request->session()->put(['UserID'=>$userId]);
+                $request->session()->put(['IsAdmin'=>$isAdmin]);
+                $request->session()->put(['user'=>$userData]);
                 return view("welcome");
             }
         } else {
@@ -81,10 +81,10 @@ class AuthenticationController extends Controller
     }
     
     public function logout(Request $request){
-        session(['LoggedIn'=>null]);
-        session(['UserID'=>null]);
-        session(['IsAdmin'=>null]);
-        session(['user'=>null]);
+        $request->session()->put(['LoggedIn'=>null]);
+        $request->session()->put(['UserID'=>null]);
+        $request->session()->put(['IsAdmin'=>null]);
+        $request->session()->put(['user'=>null]);
         return view("registerandlogin")->with(['message'=>"You have been logged out.", 'doLogin'=>true]);
     }
     

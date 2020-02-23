@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Log;
 use App\Services\Utility\DatabaseException;
 use PDO;
 use PDOException;
+use App\Models\EducationModel;
 
 /**
  * Implements CRUD operations for the CREDENTIALS table
@@ -40,7 +41,7 @@ class EducationDAO implements IDataAccessObject
             // Build query and bind parameters
             $query = "INSERT INTO `education`(`id`, `USERS_ID`, `SCHOOL`, `DESCRIPTION`) VALUES (NULL, :users_id, :school, :description)";
 
-            $id = $model->getId();
+            $id = $model->getUserid();
             $school = $model->getSchool();
             $description = $model->getDescription();
 
@@ -93,9 +94,12 @@ class EducationDAO implements IDataAccessObject
             $result = $stmt->execute();
 
             if ($result) {
-
+                $result = array();
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    array_push($result, new EducationModel($data['ID'], $data['USERS_ID'], $data['SCHOOL'], $data['DESCRIPTION']));
+                }
                 Log::info("Exit EducationDAO.readAll() with success");
-                return $stmt;
+                return $result;
             } else {
 
                 Log::info("Exit EducationDAO.readAll() with failure.");
@@ -123,7 +127,7 @@ class EducationDAO implements IDataAccessObject
         try {
 
             // Build query and bind parameters
-            $query = "SELECT * FROM EDUCATION WHERE USERS_ID=:id";
+            $query = "SELECT * FROM EDUCATION WHERE ID=:id";
 
             $stmt = $this->db->prepare($query);
 
@@ -132,10 +136,11 @@ class EducationDAO implements IDataAccessObject
             // Execute query and check result
             $result = $stmt->execute();
 
-            if ($result || $stmt->rowCount() == 1) {
-
+            if ($result && $stmt->rowCount() == 1) {
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
+                $result = new EducationModel($data['ID'], $data['USERS_ID'], $data['SCHOOL'], $data['DESCRIPTION']);
                 Log::info("Exit EducationDAO.readById($id) with success");
-                return $stmt;
+                return $result;
             } else {
 
                 Log::info("Exit EducationDAO.readById($id) with failure. Data:{id: " . $id . "}");
@@ -165,7 +170,7 @@ class EducationDAO implements IDataAccessObject
             // Build the query programmatically with available parameters
             $query = "SELECT * FROM EDUCATION WHERE";
 
-            $id = $model->getId();
+            $id = $model->getUserid();
             $school = $model->getSchool();
             $description = $model->getDescription();
 
@@ -200,9 +205,12 @@ class EducationDAO implements IDataAccessObject
             $result = $stmt->execute();
 
             if ($result) {
-
+                $result = array();
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    array_push($result, new EducationModel($data['ID'], $data['USERS_ID'], $data['SCHOOL'], $data['DESCRIPTION']));
+                }
                 Log::info("Exit EducationDAO.readByModel() with success");
-                return $stmt;
+                return $result;
             } else {
 
                 Log::info("Exit EducationDAO.readByModel() with failure. Data:{" . $model . "}");
@@ -238,15 +246,15 @@ class EducationDAO implements IDataAccessObject
 
             $count = 0;
             if ($school != null) {
-                $query = $query . ($count > 0 ? " AND" : "") . " SCHOOL=:school";
+                $query = $query . ($count > 0 ? " ," : "") . " SCHOOL=:school";
                 $count ++;
             }
             if ($description != null) {
-                $query = $query . ($count > 0 ? " AND" : "") . " DESCRIPTION=:description";
+                $query = $query . ($count > 0 ? " ," : "") . " DESCRIPTION=:description";
                 $count ++;
             }
 
-            $query = $query . " WHERE USERS_ID=:id";
+            $query = $query . " WHERE ID=:id";
 
             // Prepare the query and bind available parameters
             $stmt = $this->db->prepare($query);
@@ -294,7 +302,7 @@ class EducationDAO implements IDataAccessObject
         try {
 
             // Build the query and bind parameters
-            $query = "DELETE FROM EDUCATION WHERE USERS_ID = :id";
+            $query = "DELETE FROM EDUCATION WHERE ID = :id";
 
             $stmt = $this->db->prepare($query);
 

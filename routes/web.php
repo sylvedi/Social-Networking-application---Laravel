@@ -11,6 +11,9 @@
 |
 */
 
+use App\Models\ExperienceModel;
+use App\Models\SkillModel;
+use App\Models\EducationModel;
 
 /**
  * PAGE ROUTES
@@ -40,12 +43,21 @@ Route::get('/profile/edit', ['as'=>'editprofile', 'uses'=>"ProfileController@dis
 
 // Education edit page
 Route::get('/profile/education/edit', ['as'=>'editprofileeducation', 'uses'=>"ProfileController@displayEducationForEdit"]);
+Route::get('/profile/education/add', function(){
+    return view('addEducation')->with(['editing'=>false, 'education'=>new EducationModel(null, null, null, null)]);
+})->name('addprofileeducation');
 
 // Skill edit page
 Route::get('/profile/skill/edit', ['as'=>'editprofileskill', 'uses'=>"ProfileController@displaySkillForEdit"]);
+Route::get('/profile/skill/add', function(){
+    return view('addSkill')->with(['editing'=>false, 'skill'=>new SkillModel(null, null, null, null)]);
+})->name('addprofileskill');
 
 // Experience edit page
 Route::get('/profile/experience/edit', ['as'=>'editprofileexperience', 'uses'=>"ProfileController@displayExperienceForEdit"]);
+Route::get('/profile/experience/add', function(){
+    return view('addExperience')->with(['editing'=>false, 'experience'=>new ExperienceModel(null, null, null, null, null, null, null, null)]);
+})->name('addprofileexperience');
 
 
 /*
@@ -71,6 +83,39 @@ Route::post('/api/' . $_APIVER . "/user/unsuspend", ['as'=>'unsuspendUser', 'use
 
 // Unsuspend user route
 Route::post('/api/' . $_APIVER . "/user/suspend", ['as'=>'suspendUser', 'uses'=>"AdministrationController@suspendUser"]);
+
+// TODO
+// Add Skill
+Route::post('/api/' . $_APIVER . "/education/create", ['as'=>'addEducation', 'uses'=>"ProfileController@createEducation"]);
+
+// Edit Education
+Route::post('/api/' . $_APIVER . "/education/update", ['as'=>'updateEducation', 'uses'=>"ProfileController@updateEducation"]);
+
+// Delete Education
+Route::post('/api/' . $_APIVER . "/education/delete", ['as'=>'deleteEducation', 'uses'=>"ProfileController@deleteEducation"]);
+Route::get('/api/' . $_APIVER . "/education/delete", ['as'=>'deleteEducation', 'uses'=>"ProfileController@deleteEducation"]);
+
+// Add Skill
+Route::post('/api/' . $_APIVER . "/skill/create", ['as'=>'addSkill', 'uses'=>"ProfileController@createSkill"]);
+
+// Edit Skill
+Route::post('/api/' . $_APIVER . "/skill/update", ['as'=>'updateSkill', 'uses'=>"ProfileController@updateSkill"]);
+
+// Delete Skill
+Route::post('/api/' . $_APIVER . "/skill/delete", ['as'=>'deleteSkill', 'uses'=>"ProfileController@deleteSkill"]);
+Route::get('/api/' . $_APIVER . "/skill/delete", ['as'=>'deleteSkill', 'uses'=>"ProfileController@deleteSkill"]);
+
+// Add Experience
+Route::post('/api/' . $_APIVER . "/experience/create", ['as'=>'addExperience', 'uses'=>"ProfileController@createExperience"]);
+
+// Edit Experience
+Route::post('/api/' . $_APIVER . "/experience/update", ['as'=>'updateExperience', 'uses'=>"ProfileController@updateExperience"]);
+
+// Delete Experience
+Route::post('/api/' . $_APIVER . "/experience/delete", ['as'=>'deleteExperience', 'uses'=>"ProfileController@deleteExperience"]);
+Route::get('/api/' . $_APIVER . "/experience/delete", ['as'=>'deleteExperience', 'uses'=>"ProfileController@deleteExperience"]);
+
+// END TODO
 
 /*
  * DEBUG ROUTES

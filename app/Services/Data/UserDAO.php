@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Log;
 use App\Services\Utility\DatabaseException;
 use PDO;
 use PDOException;
+use App\Models\UserModel;
 
 /**
  * Implements CRUD operations for the USERS table
@@ -161,9 +162,12 @@ class UserDAO implements IDataAccessObject
             $result = $stmt->execute();
 
             if ($result && $stmt->rowCount() == 1) {
-
+                
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
+                $user = new UserModel($data['CREDENTIALS_ID'], null, null, $data['FIRSTNAME'], $data['LASTNAME'], $data['EMAIL'], $data['CITY'], $data['STATE'], $data['SUSPENDED'], $data['BIRTHDAY'], $data['TAGLINE'], $data['PHOTO']);
                 Log::info("Exit UserDAO.readById($id) with success");
-                return $stmt;
+                return $user;
+                
             } else {
 
                 Log::info("Exit UserDAO.readById($id) with failure. Data:{id: " . $id . "}");

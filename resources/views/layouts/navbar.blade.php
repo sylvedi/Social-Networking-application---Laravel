@@ -1,6 +1,6 @@
 <nav class="navbar navbar-light navbar-expand-md" style="height: 61px;background-color: #0a3d62;">
     <div class="container-fluid">
-        <div><a class="navbar-brand" href="#" style="color: rgb(236,240,241);">Connect</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-2"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button></div>
+        <div><a class="navbar-brand" href="{{ route('welcome') }}" style="color: rgb(236,240,241);">Connect</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-2"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button></div>
         <div
             class="collapse navbar-collapse" id="navcol-2" style="height: 48px;color: #ecf0f1;">
             <div class="search-container"></div>

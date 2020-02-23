@@ -18,7 +18,7 @@ class UserModel implements \JsonSerializable
     private $tagline;
     private $photo;
     
-    public static $rules = [
+    private static $rules = [
         'username' => 'required|string|between:4,16',
         'password' => 'sometimes|nullable|required_without:editing|confirmed|between:8,128',
         'firstname' => 'required|string|max:32',
@@ -51,6 +51,14 @@ class UserModel implements \JsonSerializable
         $this->photo = $photo;
     }
     
+    /**
+     * @return multitype:string 
+     */
+    public static function getRules()
+    {
+        return UserModel::$rules;
+    }
+
     /**
      * @return mixed
      */

@@ -14,6 +14,9 @@ use PDO;
 use PDOException;
 use App\Services\Utility\DatabaseException;
 use Illuminate\Support\Facades\Log;
+use App\Models\ExperienceModel;
+use App\Models\SkillModel;
+use App\Models\EducationModel;
 
 /*
  * Contains methods to manage users
@@ -78,27 +81,23 @@ class UserService
     /*
      * Get a full profile from the database
      */
-    // TODO make this include past jobs
     public function getProfile($id)
     {
         $service = new UserDAO($this->db);
         $cService = new CredentialDAO($this->db);
         $resultUser = $service->readById($id);
-        if (! $resultUser || $resultUser->rowCount() != 1) {
-            $user = new UserModel(null, null, null, null, null, null, null, null, null, null, null, null);
-            return $user;
+        if (! $resultUser ) {
+            return null;
         } else {
-            $data = $resultUser->fetch(PDO::FETCH_ASSOC);
-            $c = $cService->readById($data['CREDENTIALS_ID'])->fetch(PDO::FETCH_ASSOC);
-            $user = new UserModel($data['CREDENTIALS_ID'], $c['USERNAME'], null, $data['FIRSTNAME'], $data['LASTNAME'], $data['EMAIL'], $data['CITY'], $data['STATE'], $data['SUSPENDED'], $data['BIRTHDAY'], $data['TAGLINE'], $data['PHOTO']);
-            return $user;
+            $c = $cService->readById($id)->fetch(PDO::FETCH_ASSOC);
+            $resultUser->setUsername($c['USERNAME']);
+            return $resultUser;
         }
     }
 
     /*
      * Get all profiles from the database
      */
-    // TODO make this include past jobs
     public function getProfiles()
     {
         $service = new UserDAO($this->db);
@@ -112,6 +111,195 @@ class UserService
             array_push($users, $u);
         }
         return $users;
+    }
+    
+    public function getExperience($id){
+        $service = new ExperienceDAO($this->db);
+        $result = $service->readByModel(new ExperienceModel(null, $id, null, null, null, null, null, null));
+        if(!$result){
+            return array();
+        } else {
+            return $result;
+        }
+    }
+    
+    public function getSingleExperience($id){
+        $service = new ExperienceDAO($this->db);
+        $result = $service->readById($id);
+        if(!$result){
+            return new ExperienceModel(null, null, null, null);
+        } else {
+            return $result;
+        }
+    }
+    
+    public function getSkills($id){
+        $service = new SkillDAO($this->db);
+        $result = $service->readByModel(new SkillModel(null, $id, null, null));
+        if(!$result){
+            return array();
+        } else {
+            return $result;
+        }
+    }
+    
+    public function getSingleSkill($id){
+        $service = new SkillDAO($this->db);
+        $result = $service->readById($id);
+        if(!$result){
+            return new SkillModel(null, null, null, null);
+        } else {
+            return $result;
+        }
+    }
+    
+    public function getEducation($id){
+        $service = new EducationDAO($this->db);
+        $result = $service->readByModel(new EducationModel(null, $id, null, null));
+        if(!$result){
+            return array();
+        } else {
+            return $result;
+        }
+    }
+    
+    public function getSingleEducation($id){
+        $service = new EducationDAO($this->db);
+        $result = $service->readById($id);
+        if(!$result){
+            return new EducationModel(null, null, null, null);
+        } else {
+            return $result;
+        }
+    }
+    
+    /*
+    * Create education
+    */
+    public function createEducation($education)
+    {
+        $service = new EducationDAO($this->db);
+        
+        $result = $service->create($education);
+        if ($result)
+            return true;
+        else
+            return false;
+    }
+    
+    /*
+     * Update education
+     */
+    public function updateEducation($education)
+    {
+        $service = new EducationDAO($this->db);
+        
+        $result = $service->update($education);
+        if ($result)
+            return true;
+        else
+            return false;
+    }
+    
+    /*
+     * Delete eduaction
+     */
+    public function deleteEducation($id)
+    {
+        $service = new EducationDAO($this->db);
+        
+        $result = $service->delete($id);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /*
+     * Create skill
+     */
+    public function createSkill($skill)
+    {
+        $service = new SkillDAO($this->db);
+        
+        $result = $service->create($skill);
+        if ($result)
+            return true;
+            else
+                return false;
+    }
+    
+    /*
+     * Update skill
+     */
+    public function updateSkill($skill)
+    {
+        $service = new SkillDAO($this->db);
+        
+        $result = $service->update($skill);
+        if ($result)
+            return true;
+            else
+                return false;
+    }
+    
+    /*
+     * Delete skill
+     */
+    public function deleteSkill($id)
+    {
+        $service = new SkillDAO($this->db);
+        
+        $result = $service->delete($id);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /*
+     * Create experience
+     */
+    public function createExperience($experience)
+    {
+        $service = new ExperienceDAO($this->db);
+        
+        $result = $service->create($experience);
+        if ($result)
+            return true;
+            else
+                return false;
+    }
+    
+    /*
+     * Update experience
+     */
+    public function updateExperience($experience)
+    {
+        $service = new ExperienceDAO($this->db);
+        
+        $result = $service->update($experience);
+        if ($result)
+            return true;
+            else
+                return false;
+    }
+    
+    /*
+     * Delete experience
+     */
+    public function deleteExperience($id)
+    {
+        $service = new ExperienceDAO($this->db);
+        
+        $result = $service->delete($id);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /*
