@@ -597,27 +597,22 @@ class ProfileController extends Controller
 
                 // TODO make this return a different view for admin/non-admin
                 if ($result) {
-                    return view("admin")->with([
-                        'message' => "User has been deleted.",
-                        'users' => $service->getProfiles()
-                    ]);
+                    return redirect()->route("admin")->with([
+                        'message' => "User has been deleted."]);
                 } else {
-                    return view("admin")->with([
-                        'message' => "There was an error deleting user.",
-                        'users' => $service->getProfiles()
+                    return redirect()->route("admin")->with([
+                        'message' => "There was an error deleting user."
                     ]);
                 }
             } else {
-                return view("admin")->with([
-                    'message' => "No permissions to modify user.",
-                    'users' => $service->getProfiles()
+                return redirect()->route("admin")->with([
+                    'message' => "No permissions to modify user."
                 ]);
             }
         } else {
 
-            return view("admin")->with([
-                'message' => "You cannot perform this action on yourself.",
-                'users' => $service->getProfiles()
+            return redirect()->route("admin")->with([
+                'message' => "You cannot perform this action on yourself."
             ]);
         }
     }
