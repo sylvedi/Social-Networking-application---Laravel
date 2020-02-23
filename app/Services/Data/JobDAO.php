@@ -3,6 +3,7 @@ namespace App\Services\Data;
 
 use Illuminate\Support\Facades\Log;
 use App\Services\Utility\DatabaseException;
+use App\Models\JobModel;
 use PDO;
 use PDOException;
 
@@ -40,7 +41,7 @@ class JobDAO implements IDataAccessObject
             // Build query and bind parameters
             $query = "INSERT INTO `jobs`(`id`, `COMPANIES_ID`, `TITLE`, `DESCRIPTION`) VALUES (NULL, :company_id, :title, :description)";
 
-            $id = $model->getId();
+            $id = $model->getCompanyid();
             $title = $model->getTitle();
             $description = $model->getDescription();
 
@@ -93,9 +94,12 @@ class JobDAO implements IDataAccessObject
             $result = $stmt->execute();
 
             if ($result) {
-
+                $result = array();
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    array_push($result, new JobModel($data['ID'], $data['COMPANIES_ID'], $data['TITLE'], $data['DESCRIPTION']));
+                }
                 Log::info("Exit JobDAO.readAll() with success");
-                return $stmt;
+                return $result;
             } else {
 
                 Log::info("Exit JobDAO.readAll() with failure.");
@@ -123,7 +127,7 @@ class JobDAO implements IDataAccessObject
         try {
 
             // Build query and bind parameters
-            $query = "SELECT * FROM JOBS WHERE COMPANIES_ID=:id";
+            $query = "SELECT * FROM JOBS WHERE ID=:id";
 
             $stmt = $this->db->prepare($query);
 
@@ -133,9 +137,10 @@ class JobDAO implements IDataAccessObject
             $result = $stmt->execute();
 
             if ($result && $stmt->rowCount() == 1) {
-
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
+                $result = new JobModel($data['ID'], $data['COMPANIES_ID'], $data['TITLE'], $data['DESCRIPTION']);
                 Log::info("Exit JobDAO.readById($id) with success");
-                return $stmt;
+                return $result;
             } else {
 
                 Log::info("Exit JobDAO.readById($id) with failure. Data:{id: " . $id . "}");
@@ -165,7 +170,7 @@ class JobDAO implements IDataAccessObject
             // Build the query programmatically with available parameters
             $query = "SELECT * FROM JOBS WHERE";
 
-            $id = $model->getId();
+            $id = $model->getCompanyid();
             $title = $model->getTitle();
             $description = $model->getDescription();
 
@@ -200,9 +205,12 @@ class JobDAO implements IDataAccessObject
             $result = $stmt->execute();
 
             if ($result) {
-
+                $result = array();
+                while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    array_push($result, new JobModel($data['ID'], $data['COMPANIES_ID'], $data['TITLE'], $data['DESCRIPTION']));
+                }
                 Log::info("Exit JobDAO.readByModel() with success");
-                return $stmt;
+                return $result;
             } else {
 
                 Log::info("Exit JobDAO.readByModel() with failure. Data:{" . $model . "}");
@@ -294,7 +302,7 @@ class JobDAO implements IDataAccessObject
         try {
 
             // Build the query and bind parameters
-            $query = "DELETE FROM JOBS WHERE COMPANIES_ID = :id";
+            $query = "DELETE FROM JOBS WHERE ID = :id";
 
             $stmt = $this->db->prepare($query);
 

@@ -5,12 +5,19 @@ class JobModel
 {
     
     private $id;
+    private $companyId;
     private $title;
     private $description;
     
-    function __construct($id, $title, $description)
+    private static $rules = [
+        'title'=>'required|between:5,64',
+        'description'=>'required|between:5,512'
+    ];
+    
+    function __construct($id, $companyId, $title, $description)
     {
         $this->id = $id;
+        $this->companyId = $companyId;
         $this->title = $title;
         $this->description = $description;
     }
@@ -20,6 +27,14 @@ class JobModel
         return get_object_vars($this);
     }
     
+    /**
+     * @return multitype:string 
+     */
+    public static function getRules()
+    {
+        return JobModel::$rules;
+    }
+
     /**
      * @return mixed
      */
@@ -34,6 +49,22 @@ class JobModel
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompanyId()
+    {
+        return $this->companyId;
+    }
+
+    /**
+     * @param mixed $companyId
+     */
+    public function setCompanyId($companyId)
+    {
+        $this->companyId = $companyId;
     }
 
     /**

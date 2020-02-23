@@ -14,15 +14,14 @@
 use App\Models\ExperienceModel;
 use App\Models\SkillModel;
 use App\Models\EducationModel;
+use App\Models\JobModel;
 
 /**
  * PAGE ROUTES
  */
 
 // Landing page route
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', ['as'=>'welcome', 'uses'=>'JobController@displayJobs']);
     
 // Login/registration page route
 Route::get('/signin', function(){
@@ -58,6 +57,14 @@ Route::get('/profile/experience/edit', ['as'=>'editprofileexperience', 'uses'=>"
 Route::get('/profile/experience/add', function(){
     return view('addExperience')->with(['editing'=>false, 'experience'=>new ExperienceModel(null, null, null, null, null, null, null, null)]);
 })->name('addprofileexperience');
+
+// Edit job route
+Route::get('/job/add', function(){
+    return view('addJob')->with(['editing'=>false, 'job'=>new JobModel(null, null, null, null)]);
+})->name('addNewJob');
+
+// Edit job route
+Route::get('/job/edit', ['as'=>'editjob', 'uses'=>"JobController@displayJobForEdit"]);
 
 
 /*
@@ -113,6 +120,15 @@ Route::post('/api/' . $_APIVER . "/experience/update", ['as'=>'updateExperience'
 // Delete Experience
 Route::post('/api/' . $_APIVER . "/experience/delete", ['as'=>'deleteExperience', 'uses'=>"ProfileController@deleteExperience"]);
 Route::get('/api/' . $_APIVER . "/experience/delete", ['as'=>'deleteExperience', 'uses'=>"ProfileController@deleteExperience"]);
+
+// Add Job
+Route::post('/api/' . $_APIVER . "/job/create", ['as'=>'addJob', 'uses'=>"JobController@createJob"]);
+
+// Edit Job
+Route::post('/api/' . $_APIVER . "/job/update", ['as'=>'updateJob', 'uses'=>"JobController@updateJob"]);
+
+// Delete Job
+Route::post('/api/' . $_APIVER . "/job/delete", ['as'=>'deleteJob', 'uses'=>"JobController@deleteJob"]);
 
 /*
  * DEBUG ROUTES

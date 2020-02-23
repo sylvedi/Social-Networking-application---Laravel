@@ -1,3 +1,11 @@
 .validation_error {
 	color: red;
 }
+
+label {
+	color: gray;
+}
+
+.item {
+	background-color: black;
+}

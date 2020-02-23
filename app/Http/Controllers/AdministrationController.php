@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\Business\UserService;
+use App\Services\Business\JobService;
 use App\Services\Business\SecurityService;
 use Illuminate\Http\Request;
 
@@ -20,8 +21,11 @@ class AdministrationController extends Controller
         if ($service->isAdmin($request->session()->get('UserID'))) {
             $uService = new UserService();
             $allUsers = $uService->getProfiles();
+            $jService = new JobService();
+            $allJobs = $jService->getJobs();
             return view("admin")->with([
-                'users' => $allUsers
+                'users' => $allUsers,
+                'jobs' => $allJobs
             ]);
         } else {
             return view("welcome");
