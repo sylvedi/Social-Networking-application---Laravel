@@ -25,6 +25,8 @@ class AuthenticationController extends Controller
     public function registerNewUser(Request $request)
     {
 
+        $request->validate(RegistrationModel::getRules());
+        
         // POST parameters
         $userFirstName = $request->input('firstname');
         $userLastName = $request->input('lastname');
@@ -67,6 +69,8 @@ class AuthenticationController extends Controller
     public function loginUser(Request $request)
     {
 
+        $request->validate(LoginModel::getRules());
+        
         // POST parameters
         $userUsername = $request->input('username');
         $userPassword = $request->input('password');

@@ -16,6 +16,11 @@ class LoginModel implements \JsonSerializable
 
     private $password;
 
+    private static $rules = [
+        'username' => 'required|string|between:4,16',
+        'password' => 'required|between:8,128'
+    ];
+
     function __construct($id, $username, $password)
     {
         $this->id = $id;
@@ -26,6 +31,15 @@ class LoginModel implements \JsonSerializable
     public function jsonSerialize()
     {
         return get_object_vars($this);
+    }
+
+    /**
+     *
+     * @return multitype:string
+     */
+    public static function getRules()
+    {
+        return LoginModel::$rules;
     }
 
     /**

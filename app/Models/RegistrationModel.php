@@ -26,6 +26,16 @@ class RegistrationModel implements \JsonSerializable
 
     private $state;
 
+    private static $rules = [
+        'username' => 'required|string|between:4,16',
+        'password' => 'required|between:8,128',
+        'firstname' => 'required|string|max:32',
+        'lastname' => 'required|string|max:32',
+        'email' => 'required|email|between:5,128',
+        'city' => 'required|string|max:32',
+        'state' => 'required|string|size:2'
+    ];
+
     public function __construct($id, $username, $password, $firstname, $lastname, $email, $city, $state)
     {
         $this->id = $id;
@@ -36,6 +46,20 @@ class RegistrationModel implements \JsonSerializable
         $this->email = $email;
         $this->city = $city;
         $this->state = $state;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
+
+    /**
+     *
+     * @return multitype:string
+     */
+    public static function getRules()
+    {
+        return RegistrationModel::$rules;
     }
 
     /**

@@ -33,22 +33,46 @@
 				<div class="form-group">
 					<input class="form-control" type="username" name="username"
 						placeholder="Username" style="padding-left: 7px;">
+						@if($errors->first('username'))
+								<p class="validation_error">{{ $errors->first('username') }}</p>
+							@endif
 				</div>
 				<div class="form-group" style="padding-left: -25px;">
 					<input class="form-control" type="email" name="email"
-						placeholder="Email"> <input class="form-control" type="password"
+						placeholder="Email">
+						@if($errors->first('email'))
+								<p class="validation_error">{{ $errors->first('email') }}</p>
+							@endif
+						<input class="form-control" type="password"
 						name="password" placeholder="Password"
 						style="margin-top: 16px; margin-left: 0px; padding-left: 11px; padding-right: 12px;">
+						@if($errors->first('password'))
+								<p class="validation_error">{{ $errors->first('password') }}</p>
+							@endif
 					<input class="form-control" type="firstname" name="firstname"
-						placeholder="Firstname" style="margin-top: 16px;"> <input
+						placeholder="Firstname" style="margin-top: 16px;">
+						@if($errors->first('firstname'))
+								<p class="validation_error">{{ $errors->first('firstname') }}</p>
+							@endif
+						<input
 						class="form-control" type="lastname" name="lastname"
-						placeholder="Lastname" style="margin-top: 16px;"> <input
+						placeholder="Lastname" style="margin-top: 16px;">
+						@if($errors->first('lastname'))
+								<p class="validation_error">{{ $errors->first('lastname') }}</p>
+							@endif
+						<input
 						class="form-control" type="city" name="city" placeholder="City"
 						style="margin-top: 17px;">
+						@if($errors->first('city'))
+								<p class="validation_error">{{ $errors->first('city') }}</p>
+							@endif
 				</div>
 				<div class="form-group">
 					<input class="form-control" type="state" name="state"
 						placeholder="state">
+						@if($errors->first('state'))
+								<p class="validation_error">{{ $errors->first('state') }}</p>
+							@endif
 				</div>
 				<div class="form-group">
 					<div class="form-check">
@@ -80,11 +104,17 @@
 				<div class="illustration"></div>
 				<div class="form-group">
 					<input class="form-control" type="text" name="username"
-						placeholder="Email">
+						placeholder="Username">
+						@if($errors->first('username'))
+								<p class="validation_error">{{ $errors->first('username') }}</p>
+							@endif
 				</div>
 				<div class="form-group">
 					<input class="form-control" type="password" name="password"
 						placeholder="Password">
+						@if($errors->first('password'))
+								<p class="validation_error">{{ $errors->first('password') }}</p>
+							@endif
 				</div>
 				<div class="form-group">
 					<button class="btn btn-primary btn-block" type="submit"
