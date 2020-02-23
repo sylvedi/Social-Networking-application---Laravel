@@ -39,10 +39,6 @@ class ProfileController extends Controller
         ]);
         
     }
-    
-    // TODO list skill
-    // TODO list education
-    // TODO list experience
 
     /**
      * Retrieve a form for editing a user profile by ID
@@ -59,7 +55,7 @@ class ProfileController extends Controller
         $sService = new SecurityService();
 
         // If the logged in user has permission to edit the profile
-        if ($sService->canEditUser($id)) {
+        if ($sService->canEditUser($id, $request->session()->get('UserID'))) {
             $user = $service->getProfile($id);
             return view("profileedit")->with([
                 'user' => $user,
@@ -81,8 +77,6 @@ class ProfileController extends Controller
     public function displayEducationForEdit(Request $request)
     {
         
-        // TODO Display education for edit
-        
         // GET parameters
         $id = $request->id;
         
@@ -90,7 +84,7 @@ class ProfileController extends Controller
         $sService = new SecurityService();
         
         // If the logged in user has permission to edit the profile
-        if ($sService->canEditUser($id)) {
+        if ($sService->canEditUser($id, $request->session()->get('UserID'))) {
             $data = $service->getSingleEducation($id);
             return view("addEducation")->with([
                 'education' => $data,
@@ -110,7 +104,6 @@ class ProfileController extends Controller
     public function displaySkillForEdit(Request $request)
     {
         
-        // TODO Display skill for edit
         // GET parameters
         $id = $request->id;
         
@@ -118,7 +111,7 @@ class ProfileController extends Controller
         $sService = new SecurityService();
         
         // If the logged in user has permission to edit the profile
-        if ($sService->canEditUser($id)) {
+        if ($sService->canEditUser($id, $request->session()->get('UserID'))) {
             $data = $service->getSingleSkill($id);
             return view("addSkill")->with([
                 'skill' => $data,
@@ -140,8 +133,6 @@ class ProfileController extends Controller
     public function displayExperienceForEdit(Request $request)
     {
         
-        // TODO Display experience for edit
-        
         // GET parameters
         $id = $request->id;
         
@@ -149,7 +140,7 @@ class ProfileController extends Controller
         $sService = new SecurityService();
         
         // If the logged in user has permission to edit the profile
-        if ($sService->canEditUser($id)) {
+        if ($sService->canEditUser($id, $request->session()->get('UserID'))) {
             $data = $service->getSingleExperience($id);
             return view("addExperience")->with([
                 'experience' => $data,
@@ -183,7 +174,7 @@ class ProfileController extends Controller
         
         $sService = new SecurityService();
         
-        if ($sService->canEditUser($userId)) {
+        if ($sService->canEditUser($userId, $request->session()->get('UserID'))) {
             $result = $service->createEducation($education);
             
             if ($result) {
@@ -225,7 +216,7 @@ class ProfileController extends Controller
         
         $sService = new SecurityService();
         
-        if ($sService->canEditUser($userId)) {
+        if ($sService->canEditUser($userId, $request->session()->get('UserID'))) {
             $result = $service->updateEducation($education);
             
             if ($result) {
@@ -261,7 +252,7 @@ class ProfileController extends Controller
         $sService = new SecurityService();
             
         // If the user has permission to edit user
-        if ($sService->canEditUser($id)) {
+        if ($sService->canEditUser($id, $request->session()->get('UserID'))) {
             // Perform deletion task
             $result = $service->deleteEducation($id);
             
@@ -300,7 +291,7 @@ class ProfileController extends Controller
         
         $sService = new SecurityService();
         
-        if ($sService->canEditUser($userId)) {
+        if ($sService->canEditUser($userId, $request->session()->get('UserID'))) {
             $result = $service->createSkill($data);
             
             if ($result) {
@@ -342,7 +333,7 @@ class ProfileController extends Controller
         
         $sService = new SecurityService();
         
-        if ($sService->canEditUser($userId)) {
+        if ($sService->canEditUser($userId, $request->session()->get('UserID'))) {
             $result = $service->updateSkill($data);
             
             if ($result) {
@@ -378,7 +369,7 @@ class ProfileController extends Controller
         $sService = new SecurityService();
         
         // If the user has permission to edit user
-        if ($sService->canEditUser($id)) {
+        if ($sService->canEditUser($id, $request->session()->get('UserID'))) {
             // Perform deletion task
             $result = $service->deleteSkill($id);
             
@@ -421,7 +412,7 @@ class ProfileController extends Controller
         
         $sService = new SecurityService();
         
-        if ($sService->canEditUser($userId)) {
+        if ($sService->canEditUser($userId, $request->session()->get('UserID'))) {
             $result = $service->createExperience($experience);
             
             if ($result) {
@@ -467,7 +458,7 @@ class ProfileController extends Controller
         
         $sService = new SecurityService();
         
-        if ($sService->canEditUser($userId)) {
+        if ($sService->canEditUser($userId, $request->session()->get('UserID'))) {
             $result = $service->updateExperience($experience);
             
             if ($result) {
@@ -503,7 +494,7 @@ class ProfileController extends Controller
         $sService = new SecurityService();
         
         // If the user has permission to edit user
-        if ($sService->canEditUser($id)) {
+        if ($sService->canEditUser($id, $request->session()->get('UserID'))) {
             // Perform deletion task
             $result = $service->deleteExperience($id);
             
@@ -556,7 +547,7 @@ class ProfileController extends Controller
 
         $sService = new SecurityService();
 
-        if ($sService->canEditUser($userId)) {
+        if ($sService->canEditUser($userId, $request->session()->get('UserID'))) {
             $result = $service->updateUser($user);
 
             if ($result) {
@@ -594,7 +585,7 @@ class ProfileController extends Controller
         if ($request->session()->get('UserID') != $id) {
 
             // If the user has permission to edit user
-            if ($sService->canEditUser($id)) {
+            if ($sService->canEditUser($id, $request->session()->get('UserID'))) {
 
                 // Perform deletion task
                 $result = $service->deleteUser($id);

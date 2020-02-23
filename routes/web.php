@@ -84,8 +84,7 @@ Route::post('/api/' . $_APIVER . "/user/unsuspend", ['as'=>'unsuspendUser', 'use
 // Unsuspend user route
 Route::post('/api/' . $_APIVER . "/user/suspend", ['as'=>'suspendUser', 'uses'=>"AdministrationController@suspendUser"]);
 
-// TODO
-// Add Skill
+// Add Education
 Route::post('/api/' . $_APIVER . "/education/create", ['as'=>'addEducation', 'uses'=>"ProfileController@createEducation"]);
 
 // Edit Education
@@ -114,8 +113,6 @@ Route::post('/api/' . $_APIVER . "/experience/update", ['as'=>'updateExperience'
 // Delete Experience
 Route::post('/api/' . $_APIVER . "/experience/delete", ['as'=>'deleteExperience', 'uses'=>"ProfileController@deleteExperience"]);
 Route::get('/api/' . $_APIVER . "/experience/delete", ['as'=>'deleteExperience', 'uses'=>"ProfileController@deleteExperience"]);
-
-// END TODO
 
 /*
  * DEBUG ROUTES

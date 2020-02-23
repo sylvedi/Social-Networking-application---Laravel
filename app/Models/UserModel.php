@@ -32,7 +32,6 @@ class UserModel implements \JsonSerializable
         'tagline' => 'string|max:255',
         'photo' => 'string|max:128',
         
-        // TODO
         'password_confirmation' => 'sometimes|required_unless:password,|same:password'
     ];
     

@@ -17,7 +17,7 @@ class AdministrationController extends Controller
     public function displayAdminPage(Request $request)
     {
         $service = new SecurityService();
-        if ($service->isAdminSession()) {
+        if ($service->isAdmin($request->session()->get('UserID'))) {
             $uService = new UserService();
             $allUsers = $uService->getProfiles();
             return view("admin")->with([

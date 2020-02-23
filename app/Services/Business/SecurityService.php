@@ -58,14 +58,15 @@ class SecurityService
         
     }
     
-    
-    // TODO check these against database
     /*
      * Verify that the currently logged in user is an admin
      */
-    public function isAdminSession(){
+    public function isAdmin($id){
         
-        if(session('LoggedIn') && session('IsAdmin')){
+        $service = new AdminDAO($this->db);
+        $result = $service->readById($id);
+        
+        if($result){
             return true;
         } else {
             return false;
@@ -76,8 +77,8 @@ class SecurityService
     /*
      * Verify that the currently logged in user has permission to edit the given user by ID
      */
-    public function canEditUser($id){
-        if(session('LoggedIn') && (session('UserID') == $id || session('IsAdmin'))){
+    public function canEditUser($id, $userId){
+        if($userId == $id || $this->isAdmin($userId)){
             return true;
         } else {
             return false;
