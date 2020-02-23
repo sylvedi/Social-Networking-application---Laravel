@@ -47,16 +47,10 @@ class AdministrationController extends Controller
         if (session('UserID') != $userId) {
             $result = $service->suspendUser($userId);
             if ($result) {
-                return view("admin")->with([
-                    'message' => "The user was suspended.",
-                    'users' => $service->getProfiles()
-                ]);
+                return redirect()->route('admin')->with(['message'=>'The user was suspended.']);
             }
         } else {
-            return view("admin")->with([
-                'message' => "You cannot perform this action on yourself.",
-                'users' => $service->getProfiles()
-            ]);
+            return redirect()->route('admin')->with(['message'=>'You cannot perform this action on yourself']);
         }
     }
 
@@ -75,16 +69,10 @@ class AdministrationController extends Controller
         if (session('UserID') != $userId) {
             $result = $service->unsuspendUser($userId);
             if ($result) {
-                return view("admin")->with([
-                    'message' => "The user was restored.",
-                    'users' => $service->getProfiles()
-                ]);
+                return redirect()->route('admin')->with(['message'=>'The user was restored.']);
             }
         } else {
-            return view("admin")->with([
-                'message' => "You cannot perform this action on yourself.",
-                'users' => $service->getProfiles()
-            ]);
+            return redirect()->route('admin')->with(['message'=>'You cannot perform this action on yourself']);
         }
     }
 }

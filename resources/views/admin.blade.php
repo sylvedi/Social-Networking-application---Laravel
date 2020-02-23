@@ -21,7 +21,7 @@
 					</div>
 
 					<div class="tab-content">
-						<div id="users" class="tab-pane fade in active">
+						<div id="users" class="tab-pane fade in active show">
 							@include('usersList')
 						</div>
 						<div id="jobs" class="tab-pane fade">
