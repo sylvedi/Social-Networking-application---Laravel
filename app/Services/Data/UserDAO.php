@@ -162,12 +162,11 @@ class UserDAO implements IDataAccessObject
             $result = $stmt->execute();
 
             if ($result && $stmt->rowCount() == 1) {
-                
+
                 $data = $stmt->fetch(PDO::FETCH_ASSOC);
                 $user = new UserModel($data['CREDENTIALS_ID'], null, null, $data['FIRSTNAME'], $data['LASTNAME'], $data['EMAIL'], $data['CITY'], $data['STATE'], $data['SUSPENDED'], $data['BIRTHDAY'], $data['TAGLINE'], $data['PHOTO']);
                 Log::info("Exit UserDAO.readById($id) with success");
                 return $user;
-                
             } else {
 
                 Log::info("Exit UserDAO.readById($id) with failure. Data:{id: " . $id . "}");
@@ -373,7 +372,7 @@ class UserDAO implements IDataAccessObject
 
             // Prepare the query and bind available parameters
             $stmt = $this->db->prepare($query);
-            
+
             $stmt->bindParam(':id', $id);
             if ($firstname != null) {
                 $stmt->bindParam(':firstname', $firstname);

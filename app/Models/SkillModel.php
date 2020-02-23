@@ -1,19 +1,28 @@
 <?php
 namespace App\Models;
 
+/**
+ * Model for the SKILLS table
+ *
+ * @author Jake McDermitt
+ *        
+ */
 class SkillModel
 {
-    
+
     private $id;
+
     private $userId;
+
     private $description;
+
     private $years;
-    
+
     private static $rules = [
-        'description'=>'required|between:4,32',
-        'years'=>'required|integer|min:1'
+        'description' => 'required|between:4,32',
+        'years' => 'required|integer|min:1'
     ];
-    
+
     function __construct($id, $userId, $description, $years)
     {
         $this->id = $id;
@@ -21,14 +30,15 @@ class SkillModel
         $this->description = $description;
         $this->years = $years;
     }
-    
+
     public function jsonSerialize()
     {
         return get_object_vars($this);
     }
-    
+
     /**
-     * @return multitype:string 
+     *
+     * @return multitype:string
      */
     public static function getRules()
     {
@@ -36,6 +46,7 @@ class SkillModel
     }
 
     /**
+     *
      * @return mixed
      */
     public function getId()
@@ -44,6 +55,7 @@ class SkillModel
     }
 
     /**
+     *
      * @param mixed $id
      */
     public function setId($id)
@@ -52,6 +64,7 @@ class SkillModel
     }
 
     /**
+     *
      * @return mixed
      */
     public function getUserId()
@@ -60,6 +73,7 @@ class SkillModel
     }
 
     /**
+     *
      * @param mixed $userId
      */
     public function setUserId($userId)
@@ -68,6 +82,7 @@ class SkillModel
     }
 
     /**
+     *
      * @return mixed
      */
     public function getDescription()
@@ -76,6 +91,7 @@ class SkillModel
     }
 
     /**
+     *
      * @param mixed $description
      */
     public function setDescription($description)
@@ -84,6 +100,7 @@ class SkillModel
     }
 
     /**
+     *
      * @return mixed
      */
     public function getYears()
@@ -92,12 +109,11 @@ class SkillModel
     }
 
     /**
+     *
      * @param mixed $years
      */
     public function setYears($years)
     {
         $this->years = $years;
     }
-
-    
 }

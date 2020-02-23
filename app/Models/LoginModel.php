@@ -1,6 +1,12 @@
 <?php
 namespace App\Models;
 
+/**
+ * Model for the CREDENTIALS table
+ *
+ * @author Jake McDermitt
+ *        
+ */
 class LoginModel implements \JsonSerializable
 {
 

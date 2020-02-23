@@ -288,7 +288,7 @@ class ExperienceDAO implements IDataAccessObject
             $startdate = $model->getStartdate();
             $enddate = $model->getEnddate();
             $currentjob = ($model->getCurrentjob() == true ? 1 : 0); // TODO there is a bug here where the column won't update to 0
-            
+
             $count = 0;
             if ($company != null) {
                 $query = $query . ($count > 0 ? " ," : "") . " `COMPANY`=:company";

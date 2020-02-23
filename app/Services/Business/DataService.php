@@ -1,19 +1,24 @@
 <?php
-
 namespace App\Services\Business;
 
-use \PDO;
+use PDO;
 
-/*
- * Contains static methods for accessing the database
+/**
+ * Contains methods relating to database access
+ *
+ * @author Jake McDermitt
+ *        
  */
 class DataService
 {
-    
-    /*
-     * Connect to the mySQL database
+
+    /**
+     * Get a connection to the database
+     *
+     * @return \PDO
      */
-    public static function connect(){
+    public static function connect()
+    {
         $servername = config("database.connections.mysql.host");
         $port = config("database.connections.mysql.port");
         $username = config("database.connections.mysql.username");
@@ -23,6 +28,5 @@ class DataService
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $db;
     }
-    
 }
 

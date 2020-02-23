@@ -9,6 +9,11 @@ use App\Models\SkillModel;
 use App\Models\UserModel;
 use App\Models\ExperienceModel;
 
+/**
+ * Manages profile data and display, including job experience, skills, and education.
+ * @author Jake McDermitt
+ *
+ */
 class ProfileController extends Controller
 {
 

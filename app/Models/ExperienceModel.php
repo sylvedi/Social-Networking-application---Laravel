@@ -1,11 +1,17 @@
 <?php
 namespace App\Models;
 
+/**
+ * Model for the EXPERIENCE table
+ *
+ * @author Jake McDermitt
+ *        
+ */
 class ExperienceModel
 {
 
     private $id;
-    
+
     private $userid;
 
     private $company;
@@ -13,19 +19,19 @@ class ExperienceModel
     private $jobtitle;
 
     private $description;
-    
+
     private $startdate;
-    
+
     private $enddate;
-    
+
     private $currentjob;
-    
+
     private static $rules = [
-        'company'=>'required|max:128',
-        'jobtitle'=>'required|max:128',
-        'description'=>'required|max:512',
-        'startdate'=>'required|date',
-        'enddate'=>'required_if:currentjob,false|date'
+        'company' => 'required|max:128',
+        'jobtitle' => 'required|max:128',
+        'description' => 'required|max:512',
+        'startdate' => 'required|date',
+        'enddate' => 'required_if:currentjob,false|date'
     ];
 
     function __construct($id, $userid, $company, $jobtitle, $description, $startdate, $enddate, $currentjob)
@@ -39,14 +45,15 @@ class ExperienceModel
         $this->enddate = $enddate;
         $this->currentjob = $currentjob;
     }
-    
+
     public function jsonSerialize()
     {
         return get_object_vars($this);
     }
-    
+
     /**
-     * @return multitype:string 
+     *
+     * @return multitype:string
      */
     public static function getRules()
     {
@@ -72,6 +79,7 @@ class ExperienceModel
     }
 
     /**
+     *
      * @return mixed
      */
     public function getUserid()
@@ -80,6 +88,7 @@ class ExperienceModel
     }
 
     /**
+     *
      * @param mixed $userid
      */
     public function setUserid($userid)
@@ -140,7 +149,9 @@ class ExperienceModel
     {
         $this->description = $description;
     }
+
     /**
+     *
      * @return mixed
      */
     public function getStartdate()
@@ -149,6 +160,7 @@ class ExperienceModel
     }
 
     /**
+     *
      * @param mixed $startdate
      */
     public function setStartdate($startdate)
@@ -157,6 +169,7 @@ class ExperienceModel
     }
 
     /**
+     *
      * @return mixed
      */
     public function getEnddate()
@@ -165,6 +178,7 @@ class ExperienceModel
     }
 
     /**
+     *
      * @param mixed $enddate
      */
     public function setEnddate($enddate)
@@ -173,6 +187,7 @@ class ExperienceModel
     }
 
     /**
+     *
      * @return mixed
      */
     public function getCurrentjob()
@@ -181,12 +196,12 @@ class ExperienceModel
     }
 
     /**
+     *
      * @param mixed $currentjob
      */
     public function setCurrentjob($currentjob)
     {
         $this->currentjob = $currentjob;
     }
-
 }
 

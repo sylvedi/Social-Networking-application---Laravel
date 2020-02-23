@@ -18,8 +18,11 @@ use App\Models\ExperienceModel;
 use App\Models\SkillModel;
 use App\Models\EducationModel;
 
-/*
- * Contains methods to manage users
+/**
+ * Contains methods to manage user related data including profiles, skills, education, and experience
+ *
+ * @author Jake McDermitt
+ *        
  */
 class UserService
 {
@@ -31,8 +34,12 @@ class UserService
         $this->db = DataService::connect();
     }
 
-    /*
-     * Registers the given user in the database and returns a success/failure boolean
+    /**
+     * Registers the given user in the database
+     *
+     * @param RegistrationModel $user
+     * @throws DatabaseException
+     * @return boolean|number
      */
     public function registerUser(RegistrationModel $user)
     {
@@ -76,8 +83,11 @@ class UserService
         }
     }
 
-    /*
-     * Get a full profile from the database
+    /**
+     * Get a profile from the database by id
+     *
+     * @param int $id
+     * @return NULL|boolean|\App\Models\UserModel
      */
     public function getProfile($id)
     {
@@ -93,8 +103,10 @@ class UserService
         }
     }
 
-    /*
+    /**
      * Get all profiles from the database
+     *
+     * @return array
      */
     public function getProfiles()
     {
@@ -111,6 +123,12 @@ class UserService
         return $users;
     }
 
+    /**
+     * Get all experience entries associated with a user ID
+     *
+     * @param int $id
+     * @return array|boolean|array
+     */
     public function getExperience($id)
     {
         $service = new ExperienceDAO($this->db);
@@ -122,6 +140,12 @@ class UserService
         }
     }
 
+    /**
+     * Get an experience entry by ID
+     *
+     * @param int $id
+     * @return \App\Models\ExperienceModel|boolean|\App\Models\ExperienceModel
+     */
     public function getSingleExperience($id)
     {
         $service = new ExperienceDAO($this->db);
@@ -133,6 +157,12 @@ class UserService
         }
     }
 
+    /**
+     * Get all skills associated with a user ID
+     *
+     * @param int $id
+     * @return array|boolean|array
+     */
     public function getSkills($id)
     {
         $service = new SkillDAO($this->db);
@@ -144,6 +174,12 @@ class UserService
         }
     }
 
+    /**
+     * Get a skill by ID
+     *
+     * @param int $id
+     * @return \App\Models\SkillModel|boolean|\App\Models\SkillModel
+     */
     public function getSingleSkill($id)
     {
         $service = new SkillDAO($this->db);
@@ -155,6 +191,12 @@ class UserService
         }
     }
 
+    /**
+     * Get all education entries associated with a user ID
+     *
+     * @param int $id
+     * @return array|boolean|array
+     */
     public function getEducation($id)
     {
         $service = new EducationDAO($this->db);
@@ -166,6 +208,12 @@ class UserService
         }
     }
 
+    /**
+     * Get an education entry by ID
+     *
+     * @param int $id
+     * @return \App\Models\EducationModel|boolean|\App\Models\EducationModel
+     */
     public function getSingleEducation($id)
     {
         $service = new EducationDAO($this->db);
@@ -177,8 +225,11 @@ class UserService
         }
     }
 
-    /*
-     * Create education
+    /**
+     * Create an education entry
+     *
+     * @param EducationModel $education
+     * @return boolean
      */
     public function createEducation($education)
     {
@@ -191,8 +242,11 @@ class UserService
             return false;
     }
 
-    /*
-     * Update education
+    /**
+     * Update an education entry
+     *
+     * @param EducationModel $education
+     * @return boolean
      */
     public function updateEducation($education)
     {
@@ -205,8 +259,11 @@ class UserService
             return false;
     }
 
-    /*
-     * Delete eduaction
+    /**
+     * Delete an education entry
+     *
+     * @param int $id
+     * @return boolean
      */
     public function deleteEducation($id)
     {
@@ -220,8 +277,11 @@ class UserService
         }
     }
 
-    /*
-     * Create skill
+    /**
+     * Create a skill
+     *
+     * @param SkillModel $skill
+     * @return boolean
      */
     public function createSkill($skill)
     {
@@ -234,8 +294,11 @@ class UserService
             return false;
     }
 
-    /*
-     * Update skill
+    /**
+     * Update a skill
+     *
+     * @param SkillModel $skill
+     * @return boolean
      */
     public function updateSkill($skill)
     {
@@ -248,8 +311,11 @@ class UserService
             return false;
     }
 
-    /*
-     * Delete skill
+    /**
+     * Delete a skill
+     *
+     * @param SkillModel $id
+     * @return boolean
      */
     public function deleteSkill($id)
     {
@@ -263,8 +329,11 @@ class UserService
         }
     }
 
-    /*
-     * Create experience
+    /**
+     * Create an experience entry
+     *
+     * @param ExperienceModel $experience
+     * @return boolean
      */
     public function createExperience($experience)
     {
@@ -277,8 +346,11 @@ class UserService
             return false;
     }
 
-    /*
-     * Update experience
+    /**
+     * Update an experience entry
+     *
+     * @param ExperienceModel $experience
+     * @return boolean
      */
     public function updateExperience($experience)
     {
@@ -291,8 +363,11 @@ class UserService
             return false;
     }
 
-    /*
-     * Delete experience
+    /**
+     * Delete an experience entry
+     *
+     * @param ExperienceModel $id
+     * @return boolean
      */
     public function deleteExperience($id)
     {
@@ -306,34 +381,11 @@ class UserService
         }
     }
 
-    /*
-     * Suspend a user
-     */
-    public function suspendUser($id)
-    {
-        $service = new UserDAO($this->db);
-        $user = $this->getProfile($id);
-        $user->setPassword(null); // keep the password from updating
-        $user->setSuspended(true);
-        $result = $service->update($user);
-        return $result;
-    }
-
-    /*
-     * Remove suspension on a user
-     */
-    public function unsuspendUser($id)
-    {
-        $service = new UserDAO($this->db);
-        $user = $this->getProfile($id);
-        $user->setPassword(null); // keep the password from updating
-        $user->setSuspended(false);
-        $result = $service->update($user);
-        return $result;
-    }
-
-    /*
+    /**
      * Update a user
+     *
+     * @param UserModel $user
+     * @return boolean
      */
     public function updateUser($user)
     {
@@ -358,8 +410,11 @@ class UserService
             return false;
     }
 
-    /*
+    /**
      * Delete a user
+     *
+     * @param UserModel $id
+     * @return boolean
      */
     public function deleteUser($id)
     {

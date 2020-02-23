@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use PDO;
 use App\Models\LoginModel;
 use App\Services\Data\CredentialDAO;
 use App\Services\Business\DataService;

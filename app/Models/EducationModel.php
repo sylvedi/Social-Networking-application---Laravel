@@ -1,20 +1,26 @@
 <?php
 namespace App\Models;
 
+/**
+ * Model for the EDUCATION table
+ *
+ * @author Jake McDermitt
+ *        
+ */
 class EducationModel
 {
 
     private $id;
-    
+
     private $userId;
 
     private $school;
 
     private $description;
-    
+
     private static $rules = [
-        'school'=>'required|min:3|max:64',
-        'description'=>'required|max:128'
+        'school' => 'required|min:3|max:64',
+        'description' => 'required|max:128'
     ];
 
     function __construct($id, $userId, $school, $description)
@@ -31,7 +37,8 @@ class EducationModel
     }
 
     /**
-     * @return multitype:string 
+     *
+     * @return multitype:string
      */
     public static function getRules()
     {
@@ -57,6 +64,7 @@ class EducationModel
     }
 
     /**
+     *
      * @return mixed
      */
     public function getUserId()
@@ -65,6 +73,7 @@ class EducationModel
     }
 
     /**
+     *
      * @param mixed $userId
      */
     public function setUserId($userId)

@@ -1,24 +1,32 @@
 <?php
 namespace App\Models;
 
+/**
+ * Model for the COMPANIES table
+ *
+ * @author Jake McDermitt
+ *        
+ */
 class CompanyModel
 {
-    
+
     private $id;
+
     private $name;
-    
+
     function __construct($id, $name)
     {
         $this->id = $id;
         $this->name = $name;
     }
-    
+
     public function jsonSerialize()
     {
         return get_object_vars($this);
     }
-    
+
     /**
+     *
      * @return mixed
      */
     public function getId()
@@ -27,6 +35,7 @@ class CompanyModel
     }
 
     /**
+     *
      * @param mixed $id
      */
     public function setId($id)
@@ -35,6 +44,7 @@ class CompanyModel
     }
 
     /**
+     *
      * @return mixed
      */
     public function getName()
@@ -43,13 +53,12 @@ class CompanyModel
     }
 
     /**
+     *
      * @param mixed $name
      */
     public function setName($name)
     {
         $this->name = $name;
     }
-
-    
 }
 
