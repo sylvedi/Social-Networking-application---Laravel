@@ -206,8 +206,4 @@ class RegistrationModel implements \JsonSerializable
         $this->state = $state;
     }
 
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
-    }
 }
