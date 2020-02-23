@@ -105,7 +105,7 @@ class AuthenticationController extends Controller
                 $request->session()->put([
                     'user' => $userData
                 ]);
-                return redirect('welcome');
+                return redirect()->route('welcome');
             }
         } else {
             return view("registerandlogin")->with([
